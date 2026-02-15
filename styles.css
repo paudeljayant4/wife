@@ -450,10 +450,19 @@ p {
   align-items: center;
   padding: var(--spacing-lg) var(--spacing-md);
   z-index: 1;
+  margin-bottom: var(--spacing-xl); /* Add gap between sections */
 }
 
 .full-screen {
   height: 100vh;
+  margin-bottom: 0; /* Full screen sections don't need extra margin */
+}
+
+/* Add extra spacing for non-full-screen sections */
+#timeline,
+#love-notes-section:not(.full-screen) {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -494,34 +503,70 @@ p {
 }
 
 .scroll-indicator {
-  position: absolute;
-  bottom: 3rem;
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
   opacity: 0;
-  animation: fadeInUp 1s ease forwards 2.5s, floatUpDown 3s ease-in-out infinite 3.5s;
+  animation: fadeInRight 1s ease forwards 2.5s, floatUpDown 3s ease-in-out infinite 3.5s;
+  z-index: 100;
 }
 
-/* Scroll buttons for all sections */
+/* Scroll buttons for all sections - positioned on right side */
 .scroll-btn {
-  margin-top: var(--spacing-lg);
-  position: relative;
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
   animation: floatUpDown 3s ease-in-out infinite;
+  box-shadow: 
+    0 10px 30px rgba(107, 76, 154, 0.5),
+    0 0 30px rgba(212, 165, 255, 0.4);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 1.5rem 1rem;
+  white-space: nowrap;
 }
 
-/* For full-screen sections, position scroll button at bottom */
+.scroll-btn::after {
+  content: ' →';
+  display: inline-block;
+  transform: rotate(90deg);
+  margin-left: 0.5rem;
+}
+
+.scroll-btn:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 
+    0 15px 50px rgba(107, 76, 154, 0.7),
+    0 0 50px rgba(212, 165, 255, 0.9);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    right: 0;
+  }
+  to {
+    opacity: 1;
+    right: 2rem;
+  }
+}
+
+/* Remove old positioning styles */
 .full-screen .scroll-btn {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 0;
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* Timeline sections - scroll button after content */
 #timeline .scroll-btn {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: var(--spacing-xl);
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 @keyframes fadeInUp {
@@ -844,11 +889,13 @@ p {
   opacity: 0;
   transform: translateY(30px);
   transition: var(--transition-smooth);
+  pointer-events: none;
 }
 
 .love-note.visible {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: all;
 }
 
 .love-note.hidden {
@@ -863,6 +910,10 @@ p {
   max-width: 500px;
   border: 2px solid var(--rose-gold);
   position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .note-paper::before {
@@ -880,6 +931,16 @@ p {
   line-height: 1.8;
   margin-bottom: var(--spacing-md);
   font-style: italic;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#another-note {
+  margin-top: var(--spacing-md);
+  align-self: center;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1161,13 +1222,21 @@ p {
   }
   
   /* Scroll buttons on mobile */
-  .scroll-btn {
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
+  .scroll-btn,
+  .scroll-indicator {
+    right: 1rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
   }
   
   .full-screen .scroll-btn {
-    bottom: 2rem;
+    right: 1rem;
+  }
+  
+  /* Add more spacing on mobile */
+  .panel {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
   }
 }
 
