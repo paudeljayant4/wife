@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Universe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="star-canvas" aria-hidden="true"></canvas>
+
+    <div id="intro-overlay" class="overlay active">
+      <div class="overlay-card">
+        <p>💖</p>
+        <h1>Our Universe</h1>
+        <p>Put on your headphones, then begin.</p>
+        <button id="begin-experience" class="glow-btn">Enter</button>
+      </div>
+    </div>
+
+    <section id="opening" class="panel full-screen">
+      <div class="opening-content">
+        <p id="typed-line" class="typed"></p>
+        <h1 id="constellation-name">Her Name, Written in Stars</h1>
+      </div>
+      <button id="scroll-next" class="glow-btn">Continue ↓</button>
+    </section>
+
+    <section id="rose-section" class="panel full-screen">
+      <div class="section-header">
+        <h2>A Rose for You</h2>
+        <p>Touch the rose and watch it bloom.</p>
+      </div>
+      <canvas id="rose-canvas"></canvas>
+      <p id="rose-message" class="hidden-message">You’re the most beautiful part of my story.</p>
+    </section>
+
+    <section id="timeline" class="panel">
+      <h2>Timeline of Us</h2>
+      <article class="timeline-item">
+        <h3>The first time I noticed you</h3>
+        <p>I remember the world suddenly getting quiet, as if it knew this moment mattered.</p>
+      </article>
+      <article class="timeline-item">
+        <h3>The first smile</h3>
+        <p>Soft light, warm heart, and the feeling that I had just found home.</p>
+      </article>
+      <article class="timeline-item">
+        <h3>The moment I knew</h3>
+        <p>Not loud, not dramatic — just certain. My future looked brighter with you in it.</p>
+      </article>
+    </section>
+
+    <section id="letter-section" class="panel full-screen">
+      <button id="envelope" aria-label="Open secret letter">
+        <span class="envelope-flap"></span>
+        <span class="letter-paper">
+          <span>
+            Thank you for being my peace, my laughter, and my favorite place to return to.
+            With you, even ordinary days feel magical.
+          </span>
+          <span class="closing">This is only the beginning.</span>
+        </span>
+      </button>
+      <p class="hint">Click the envelope</p>
+    </section>
+
+    <section id="ending" class="panel full-screen">
+      <canvas id="firefly-canvas"></canvas>
+      <div class="ending-text">
+        <h2>Every version of my future… has you in it.</h2>
+        <div class="heart" aria-label="Glowing heart"></div>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
