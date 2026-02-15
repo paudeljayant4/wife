@@ -211,16 +211,22 @@ main {
 
 .section.full {
   height: 100vh;
-  padding: var(--s-lg) var(--s-md);
+  padding: var(--s-xl) var(--s-md);
 }
 
 /* Add breathing room between sections */
-.section + .section {
+.section + .section:not(.full) {
   margin-top: var(--s-xl);
+  padding-top: calc(var(--s-xl) * 1.5);
 }
 
-.section.full + .section.full {
+.section.full + .section:not(.full) {
   margin-top: 0;
+  padding-top: calc(var(--s-xl) * 2);
+}
+
+.section:not(.full) + .section.full {
+  margin-top: var(--s-xl);
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -267,12 +273,20 @@ p {
 #opening {
   text-align: center;
   padding: var(--s-xl) var(--s-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-xl);
 }
 
 #opening .opening-content {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xl);
+  align-items: center;
 }
 
 .typed {
@@ -284,6 +298,24 @@ p {
   animation: fadeInUp 1.2s ease forwards 0.5s;
   padding: 0 var(--s-md);
   line-height: 1.6;
+  text-align: center;
+  margin-bottom: var(--s-lg);
+}
+
+#constellation-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--gold), var(--stardust), var(--rose));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease forwards 2.5s, shimmer 8s ease infinite 3.5s;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+  margin-top: var(--s-lg);
+  letter-spacing: 0.05em;
 }
 
 .typed::after {
@@ -516,19 +548,21 @@ p {
 
 .paper {
   position: absolute;
-  top: 10%;
-  left: 8%;
-  right: 8%;
-  bottom: 15%;
+  top: 12%;
+  left: 10%;
+  right: 10%;
+  bottom: 18%;
   background: linear-gradient(to bottom, #ffffff, #fffef8);
-  padding: var(--s-sm);
+  padding: var(--s-md);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s-md);
   font-family: var(--font-display);
-  font-size: clamp(0.85rem, 1.8vw, 1rem);
-  line-height: 1.7;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  line-height: 1.8;
   color: #2d2d2d;
   opacity: 0;
   transform: translateY(30px) scale(0.95);
@@ -544,13 +578,18 @@ p {
   transform: translateY(0) scale(1);
 }
 
+.paper p {
+  margin: 0;
+  padding: 0;
+}
+
 .sign {
   font-style: italic;
   font-weight: 600;
   color: var(--purple);
   margin-top: auto;
-  padding-top: var(--s-xs);
-  font-size: 1em;
+  font-size: 1.2em;
+  padding: 0;
 }
 
 .hint {
@@ -701,16 +740,17 @@ p {
   }
   
   .section {
-    padding: var(--s-lg) var(--s-sm);
+    padding: var(--s-xl) var(--s-sm);
   }
   
   .section.full {
-    padding: var(--s-md) var(--s-sm);
+    padding: var(--s-lg) var(--s-sm);
   }
   
   /* Add spacing between sections on mobile */
-  .section + .section {
+  .section + .section:not(.full) {
     margin-top: var(--s-lg);
+    padding-top: var(--s-xl);
   }
   
   .audio-btn {
@@ -721,6 +761,20 @@ p {
     font-size: 1.25rem;
   }
   
+  #opening .opening-content {
+    gap: var(--s-lg);
+  }
+  
+  .typed {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    margin-bottom: var(--s-md);
+  }
+  
+  #constellation-name {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    margin-top: var(--s-md);
+  }
+  
   #rose-canvas {
     max-width: 400px;
     height: 400px;
@@ -729,6 +783,7 @@ p {
   
   .timeline {
     padding-left: var(--s-sm);
+    margin-top: var(--s-md);
   }
   
   .timeline .item {
@@ -738,6 +793,22 @@ p {
   
   .content {
     padding: var(--s-md);
+  }
+  
+  #envelope {
+    width: min(380px, 90vw);
+    height: min(260px, 58vw);
+  }
+  
+  .paper {
+    padding: var(--s-sm);
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    line-height: 1.7;
+    gap: var(--s-sm);
+  }
+  
+  .sign {
+    font-size: 1.1em;
   }
   
   .heart-pulse {
@@ -756,19 +827,13 @@ p {
     left: 45px;
   }
   
-  .paper {
-    padding: var(--s-xs);
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-    line-height: 1.5;
-  }
-  
   .finale {
     gap: var(--s-lg);
     padding: var(--s-md);
   }
   
   .finale-line {
-    font-size: clamp(2rem, 6vw, 4rem) !important;
+    font-size: clamp(2rem, 8vw, 3.5rem) !important;
     padding: 0 var(--s-sm);
   }
   
