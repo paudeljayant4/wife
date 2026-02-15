@@ -42,11 +42,7 @@ const CONFIG = {
     speed: 15,
     trailLength: 100
   },
-  particleHearts: {
-    burstCount: 12,
-    floatSpeed: 2,
-    colors: ['#ff6b9d', '#ff8fb5', '#ffc1d9', '#f4c2c2']
-  },
+  
   soundEffects: {
     enabled: true,
     volume: 0.3
@@ -1338,11 +1334,7 @@ function init() {
       handleError(error, 'ShootingStars');
     }
     
-    try {
-      state.instances.particleHearts = new ParticleHearts();
-    } catch (error) {
-      handleError(error, 'ParticleHearts');
-    }
+    
     
     try {
       state.instances.rose = new InteractiveRose();
