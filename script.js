@@ -638,7 +638,6 @@ function initIntro() {
 
 function startExperience() {
   typeText();
-  initScrollBehavior();
   
   // Start constellation drawing
   if (state.instances.constellation) {
@@ -1337,12 +1336,6 @@ function init() {
       state.instances.rose = new InteractiveRose();
     } catch (error) {
       handleError(error, 'InteractiveRose');
-    }
-    
-    try {
-      state.instances.loveNotesJar = new LoveNotesJar();
-    } catch (error) {
-      handleError(error, 'LoveNotesJar');
     }
     
     try {
