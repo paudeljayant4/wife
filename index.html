@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A romantic interactive experience celebrating our universe together" />
+    <meta name="theme-color" content="#0a0e27" />
+    <title>Our Universe - A Love Story Written in Stars</title>
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Favicon (optional - add your own) -->
+    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg" /> -->
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Animated Star Background -->
+    <canvas id="star-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Intro Overlay -->
+    <div id="intro-overlay" class="overlay active" role="dialog" aria-labelledby="intro-title">
+      <div class="overlay-card">
+        <div class="heart-icon" aria-hidden="true">💖</div>
+        <h1 id="intro-title">Our Universe</h1>
+        <p>Put on your headphones, then begin.</p>
+        <button id="begin-experience" class="glow-btn" aria-label="Begin the experience">
+          Enter
+        </button>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Opening Section: Constellation Name -->
+      <section id="opening" class="panel full-screen">
+        <div class="opening-content">
+          <p id="typed-line" class="typed" aria-live="polite"></p>
+          <h1 id="constellation-name">Her Name, Written in Stars</h1>
+        </div>
+        <button id="scroll-next" class="glow-btn scroll-indicator" aria-label="Continue to next section">
+          Continue ↓
+        </button>
+      </section>
+      
+      <!-- Rose Section: Interactive Blooming Rose -->
+      <section id="rose-section" class="panel full-screen">
+        <div class="section-header">
+          <h2>A Rose for You</h2>
+          <p>Touch the rose and watch it bloom.</p>
+        </div>
+        <canvas id="rose-canvas" role="img" aria-label="Interactive blooming rose"></canvas>
+        <p id="rose-message" class="hidden-message" aria-live="polite">
+          You're the most beautiful part of my story.
+        </p>
+      </section>
+      
+      <!-- Timeline Section: Our Story -->
+      <section id="timeline" class="panel">
+        <h2>Timeline of Us</h2>
+        <div class="timeline-container">
+          <article class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>The First Time I Noticed You</h3>
+              <p>I remember the world suddenly getting quiet, as if it knew this moment mattered.</p>
+            </div>
+          </article>
+          
+          <article class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>The First Smile</h3>
+              <p>Soft light, warm heart, and the feeling that I had just found home.</p>
+            </div>
+          </article>
+          
+          <article class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>The Moment I Knew</h3>
+              <p>Not loud, not dramatic — just certain. My future looked brighter with you in it.</p>
+            </div>
+          </article>
+          
+          <article class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Every Day Since</h3>
+              <p>Each moment with you is a constellation forming in the sky of my life.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+      
+      <!-- Letter Section: Secret Message -->
+      <section id="letter-section" class="panel full-screen">
+        <button id="envelope" aria-label="Click to open secret letter" aria-expanded="false">
+          <span class="envelope-flap" aria-hidden="true"></span>
+          <div class="letter-paper">
+            <p class="letter-text">
+              Thank you for being my peace, my laughter, and my favorite place to return to.
+              With you, even ordinary days feel magical.
+            </p>
+            <p class="closing">This is only the beginning.</p>
+          </div>
+        </button>
+        <p class="hint">Click the envelope</p>
+      </section>
+      
+      <!-- Ending Section: Fireflies & Final Message -->
+      <section id="ending" class="panel full-screen">
+        <canvas id="firefly-canvas" aria-hidden="true"></canvas>
+        <div class="ending-text">
+          <h2>Every version of my future…<br />has you in it.</h2>
+          <div class="heart-pulse" aria-label="Glowing heart"></div>
+          <button id="replay-btn" class="glow-btn secondary-btn" aria-label="Experience again">
+            ↻ Experience Again
+          </button>
+        </div>
+      </section>
+    </main>
+    
+    <!-- Loading Screen (optional) -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="spinner"></div>
+      <p>Loading your universe...</p>
+    </div>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
