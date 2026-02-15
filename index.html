@@ -1,32 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A romantic experience for Himani">
   <title>Our Universe - For Himani 💫</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Inter:wght@300;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Background -->
   <canvas id="star-canvas"></canvas>
   <canvas id="shooting-stars"></canvas>
   
-  <!-- Music -->
-  <audio id="music" loop>
-    <source src="romantic-piano.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="music" loop><source src="romantic-piano.mp3" type="audio/mpeg"></audio>
   
   <button id="audio-btn" class="audio-btn">
-    <span class="icon playing">🔊</span>
-    <span class="icon paused">🔇</span>
+    <span class="playing">🔊</span>
+    <span class="paused">🔇</span>
   </button>
   
-  <!-- Intro -->
   <div id="intro" class="overlay active">
     <div class="card">
       <div class="heart">💖</div>
@@ -36,22 +27,17 @@
     </div>
   </div>
   
-  <!-- Sections -->
   <main>
     <section id="opening" class="section full">
-      <div class="opening-content">
-        <p id="typed-text" class="typed"></p>
-        <h1 id="constellation-name">Himani</h1>
-      </div>
+      <p id="typed-text" class="typed"></p>
+      <h1 id="constellation-name">Himani</h1>
     </section>
     
     <section id="rose" class="section full">
-      <div class="section-header">
-        <h2>A Rose for Himani</h2>
-        <p class="subtitle">Touch the rose and watch it bloom</p>
-      </div>
+      <h2>A Rose for Himani</h2>
+      <p class="subtitle">Touch the rose and watch it bloom</p>
       <canvas id="rose-canvas"></canvas>
-      <p id="rose-msg" class="msg hidden">Himani, you're the most beautiful part of my story 🌹</p>
+      <p id="rose-msg" class="msg">Himani, you're the most beautiful part of my story 🌹</p>
     </section>
     
     <section id="timeline" class="section">
@@ -102,8 +88,8 @@
     <section id="ending" class="section full">
       <canvas id="firefly-canvas"></canvas>
       <div class="finale">
-        <h2 id="msg1" class="finale-line">I love you</h2>
-        <h2 id="msg2" class="finale-line">my girl 💕</h2>
+        <h2 id="msg1">I love you</h2>
+        <h2 id="msg2">my girl 💕</h2>
         <div class="heart-pulse"></div>
         <button id="replay" class="btn secondary">↻ Experience Again</button>
       </div>
