@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════
    OUR UNIVERSE - ADDONS
-   New Features: Shooting Stars, Particle Hearts, Love Notes,
-   Reasons I Love You, 3D Rose, Sound Effects
+   New Features: Shooting Stars,,
+ Sound Effects
    ═══════════════════════════════════════════════════════════ */
 
 // ═══════════════════════════════════════════════════════════
@@ -250,8 +250,5 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     SoundEffects,
     ShootingStars,
-    LoveNotesJar,
-    ReasonsILoveYou,
-    Rose3D
   };
 }
