@@ -28,9 +28,14 @@ const CONFIG = {
     glowSpeed: { min: 0.02, max: 0.05 }
   },
   typing: {
-    text: "In the vastness of space, across infinite possibilities...",
+    text: "In the vastness of space, across infinite possibilities, I found you...",
     minDelay: 50,
     maxDelay: 100
+  },
+  constellation: {
+    name: "HIMANI",
+    starSize: 3,
+    connectLines: true
   }
 };
 
@@ -38,7 +43,9 @@ let state = {
   performanceMode: true,
   isMobile: false,
   isTabVisible: true,
-  instances: {}
+  instances: {},
+  audioPlaying: false,
+  audioInitialized: false
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -58,6 +65,168 @@ function checkPerformance() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// BACKGROUND MUSIC
+// ═══════════════════════════════════════════════════════════
+
+class BackgroundMusic {
+  constructor() {
+    this.audio = document.getElementById('background-music');
+    this.controlBtn = document.getElementById('audio-control');
+    
+    if (!this.audio || !this.controlBtn) return;
+    
+    this.audio.volume = 0.3; // Set to 30% volume for gentle background
+    this.isPlaying = false;
+    
+    this.setupEventListeners();
+  }
+  
+  setupEventListeners() {
+    // Toggle music on button click
+    this.controlBtn.addEventListener('click', () => this.toggle());
+    
+    // Handle audio errors gracefully
+    this.audio.addEventListener('error', (e) => {
+      console.log('Audio loading error (this is normal, using fallback):', e);
+      this.useSynthesizedMusic();
+    });
+    
+    // Fade in when loaded
+    this.audio.addEventListener('canplaythrough', () => {
+      console.log('Background music ready');
+    }, { once: true });
+  }
+  
+  async play() {
+    if (!this.audio) return;
+    
+    try {
+      // Modern browsers require user interaction before playing audio
+      await this.audio.play();
+      this.isPlaying = true;
+      this.controlBtn.classList.remove('paused');
+      state.audioPlaying = true;
+      
+      // Fade in effect
+      this.fadeIn();
+    } catch (error) {
+      console.log('Audio play failed (this is normal on first load):', error);
+      // Will be triggered on user's first interaction
+    }
+  }
+  
+  pause() {
+    if (!this.audio) return;
+    
+    this.fadeOut(() => {
+      this.audio.pause();
+      this.isPlaying = false;
+      this.controlBtn.classList.add('paused');
+      state.audioPlaying = false;
+    });
+  }
+  
+  toggle() {
+    if (this.isPlaying) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+  
+  fadeIn() {
+    if (!this.audio) return;
+    
+    this.audio.volume = 0;
+    const fadeInterval = setInterval(() => {
+      if (this.audio.volume < 0.3) {
+        this.audio.volume = Math.min(this.audio.volume + 0.02, 0.3);
+      } else {
+        clearInterval(fadeInterval);
+      }
+    }, 100);
+  }
+  
+  fadeOut(callback) {
+    if (!this.audio) return;
+    
+    const fadeInterval = setInterval(() => {
+      if (this.audio.volume > 0.02) {
+        this.audio.volume = Math.max(this.audio.volume - 0.02, 0);
+      } else {
+        clearInterval(fadeInterval);
+        this.audio.volume = 0;
+        if (callback) callback();
+      }
+    }, 100);
+  }
+  
+  // Fallback: Create synthesized romantic piano music using Web Audio API
+  useSynthesizedMusic() {
+    console.log('Using synthesized romantic music');
+    
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Romantic piano chord progression: C - Am - F - G
+      const chordProgression = [
+        [261.63, 329.63, 392.00], // C major (C, E, G)
+        [220.00, 261.63, 329.63], // A minor (A, C, E)
+        [174.61, 220.00, 261.63], // F major (F, A, C)
+        [196.00, 246.94, 293.66], // G major (G, B, D)
+      ];
+      
+      let chordIndex = 0;
+      
+      const playChord = () => {
+        const chord = chordProgression[chordIndex];
+        const now = audioContext.currentTime;
+        
+        chord.forEach((frequency, i) => {
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          oscillator.frequency.value = frequency;
+          oscillator.type = 'sine'; // Sine wave for soft piano-like sound
+          
+          // ADSR envelope for piano-like sound
+          gainNode.gain.setValueAtTime(0, now);
+          gainNode.gain.linearRampToValueAtTime(0.05, now + 0.1); // Attack
+          gainNode.gain.exponentialRampToValueAtTime(0.03, now + 0.5); // Decay/Sustain
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 2); // Release
+          
+          oscillator.start(now);
+          oscillator.stop(now + 2);
+        });
+        
+        chordIndex = (chordIndex + 1) % chordProgression.length;
+      };
+      
+      // Play chords in a loop
+      if (state.audioPlaying) {
+        this.synthesizedInterval = setInterval(playChord, 2000);
+      }
+      
+    } catch (error) {
+      console.log('Synthesized music not available:', error);
+    }
+  }
+  
+  destroy() {
+    if (this.synthesizedInterval) {
+      clearInterval(this.synthesizedInterval);
+    }
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.src = '';
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
 // LOADING SCREEN
 // ═══════════════════════════════════════════════════════════
 
@@ -68,6 +237,140 @@ function hideLoadingScreen() {
       loadingScreen.classList.add('hidden');
       setTimeout(() => loadingScreen.remove(), 1000);
     }, 1000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// CONSTELLATION NAME - HIMANI
+// ═══════════════════════════════════════════════════════════
+
+class ConstellationName {
+  constructor() {
+    this.canvas = document.createElement('canvas');
+    this.canvas.id = 'constellation-canvas';
+    this.canvas.style.position = 'absolute';
+    this.canvas.style.top = '0';
+    this.canvas.style.left = '0';
+    this.canvas.style.width = '100%';
+    this.canvas.style.height = '100%';
+    this.canvas.style.pointerEvents = 'none';
+    this.canvas.style.zIndex = '5';
+    
+    const openingSection = document.getElementById('opening');
+    if (openingSection) {
+      openingSection.appendChild(this.canvas);
+    }
+    
+    this.ctx = this.canvas.getContext('2d');
+    this.constellationStars = [];
+    this.drawProgress = 0;
+    this.animationId = null;
+    
+    this.resize();
+    this.createConstellationStars();
+    window.addEventListener('resize', () => this.resize());
+  }
+  
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
+  
+  createConstellationStars() {
+    // Letter patterns for HIMANI (simplified dot matrix style)
+    const letterH = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,2],[2,0],[2,1],[2,2],[2,3],[2,4]];
+    const letterI = [[0,0],[0,1],[0,2],[0,3],[0,4]];
+    const letterM = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,1],[4,0],[4,1],[4,2],[4,3],[4,4]];
+    const letterA = [[0,1],[0,2],[0,3],[0,4],[1,0],[1,2],[2,0],[2,1],[2,2],[2,3],[2,4]];
+    const letterN = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,3],[4,0],[4,1],[4,2],[4,3],[4,4]];
+    
+    const letters = [letterH, letterI, letterM, letterA, letterN, letterI];
+    const spacing = 50;
+    const letterSpacing = 35;
+    const scale = state.isMobile ? 8 : 12;
+    
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2 - 50;
+    const totalWidth = (letters.reduce((sum, letter) => {
+      const width = Math.max(...letter.map(p => p[0]));
+      return sum + width * scale + letterSpacing;
+    }, 0));
+    
+    let offsetX = centerX - totalWidth / 2;
+    
+    letters.forEach((letter, letterIndex) => {
+      letter.forEach(([x, y], pointIndex) => {
+        this.constellationStars.push({
+          x: offsetX + x * scale,
+          y: centerY + y * scale,
+          alpha: 0,
+          targetAlpha: 1,
+          radius: CONFIG.constellation.starSize,
+          delay: (letterIndex * letter.length + pointIndex) * 30,
+          letterIndex: letterIndex
+        });
+      });
+      
+      const letterWidth = Math.max(...letter.map(p => p[0])) * scale;
+      offsetX += letterWidth + letterSpacing;
+    });
+  }
+  
+  startAnimation() {
+    const animate = () => {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      
+      this.constellationStars.forEach((star, index) => {
+        // Fade in based on delay
+        if (this.drawProgress > star.delay) {
+          if (star.alpha < star.targetAlpha) {
+            star.alpha += 0.03;
+          }
+        }
+        
+        if (star.alpha > 0) {
+          // Draw star
+          this.ctx.beginPath();
+          this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          this.ctx.fillStyle = `rgba(255, 215, 0, ${star.alpha})`;
+          this.ctx.shadowBlur = 15;
+          this.ctx.shadowColor = `rgba(255, 215, 0, ${star.alpha * 0.8})`;
+          this.ctx.fill();
+          
+          // Draw connection lines
+          if (CONFIG.constellation.connectLines && index > 0) {
+            const prevStar = this.constellationStars[index - 1];
+            if (prevStar.letterIndex === star.letterIndex && prevStar.alpha > 0.5 && star.alpha > 0.5) {
+              this.ctx.beginPath();
+              this.ctx.moveTo(prevStar.x, prevStar.y);
+              this.ctx.lineTo(star.x, star.y);
+              this.ctx.strokeStyle = `rgba(212, 165, 255, ${Math.min(prevStar.alpha, star.alpha) * 0.4})`;
+              this.ctx.lineWidth = 1;
+              this.ctx.stroke();
+            }
+          }
+        }
+      });
+      
+      this.drawProgress += 1;
+      
+      if (this.drawProgress < this.constellationStars[this.constellationStars.length - 1].delay + 100) {
+        this.animationId = requestAnimationFrame(animate);
+      }
+    };
+    
+    setTimeout(() => {
+      this.animationId = requestAnimationFrame(animate);
+    }, 2500); // Start after main title appears
+  }
+  
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    if (this.canvas.parentNode) {
+      this.canvas.parentNode.removeChild(this.canvas);
+    }
   }
 }
 
@@ -208,6 +511,12 @@ function initIntro() {
   beginBtn.addEventListener('click', () => {
     playAudioFeedback('click');
     
+    // Start background music on user interaction
+    if (state.instances.backgroundMusic && !state.audioInitialized) {
+      state.instances.backgroundMusic.play();
+      state.audioInitialized = true;
+    }
+    
     overlay.classList.remove('active');
     setTimeout(() => {
       overlay.style.display = 'none';
@@ -219,6 +528,11 @@ function initIntro() {
 function startExperience() {
   typeText();
   initScrollBehavior();
+  
+  // Start constellation drawing
+  if (state.instances.constellation) {
+    state.instances.constellation.startAnimation();
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -787,11 +1101,24 @@ function cleanup() {
 function init() {
   checkPerformance();
   
+  // Initialize background music first
+  try {
+    state.instances.backgroundMusic = new BackgroundMusic();
+  } catch (error) {
+    handleError(error, 'BackgroundMusic');
+  }
+  
   // Initialize core features
   try {
     state.instances.starField = new StarField();
   } catch (error) {
     handleError(error, 'StarField');
+  }
+  
+  try {
+    state.instances.constellation = new ConstellationName();
+  } catch (error) {
+    handleError(error, 'ConstellationName');
   }
   
   try {
