@@ -283,8 +283,10 @@ class ConstellationName {
     const letterM = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,1],[4,0],[4,1],[4,2],[4,3],[4,4]];
     const letterA = [[0,1],[0,2],[0,3],[0,4],[1,0],[1,2],[2,0],[2,1],[2,2],[2,3],[2,4]];
     const letterN = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,3],[4,0],[4,1],[4,2],[4,3],[4,4]];
+    const letterI2 = [[0,0],[0,1],[0,2],[0,3],[0,4]];
     
-    const letters = [letterH, letterI, letterM, letterA, letterN, letterI];
+    // H-I-M-A-N-I (6 letters total)
+    const letters = [letterH, letterI, letterM, letterA, letterN, letterI2];
     const spacing = 50;
     const letterSpacing = 35;
     const scale = state.isMobile ? 8 : 12;
@@ -306,7 +308,7 @@ class ConstellationName {
           alpha: 0,
           targetAlpha: 1,
           radius: CONFIG.constellation.starSize,
-          delay: (letterIndex * letter.length + pointIndex) * 6, // Changed from 30 to 6 (5x faster)
+          delay: (letterIndex * letter.length + pointIndex) * 6, // 6ms delay per star
           letterIndex: letterIndex
         });
       });
@@ -605,8 +607,10 @@ class InteractiveRose {
     
     this.resize();
     this.setupPetals();
-    this.draw();
     this.setupEventListeners();
+    
+    // Start drawing immediately
+    this.continuousDraw();
   }
   
   resize() {
@@ -633,8 +637,15 @@ class InteractiveRose {
     this.canvas.addEventListener('click', () => this.bloom());
     window.addEventListener('resize', () => {
       clearTimeout(this.resizeTimeout);
-      this.resizeTimeout = setTimeout(() => this.resize(), 250);
+      this.resizeTimeout = setTimeout(() => {
+        this.resize();
+        this.draw();
+      }, 250);
     });
+  }
+  
+  continuousDraw() {
+    this.draw();
   }
   
   bloom() {
@@ -685,12 +696,16 @@ class InteractiveRose {
       this.centerX, this.canvas.height,
       this.centerX, this.centerY + 50
     );
-    gradient.addColorStop(0, '#3d6647');
+    gradient.addColorStop(0, '#2d5037');
+    gradient.addColorStop(0.5, '#3d6647');
     gradient.addColorStop(1, '#5a8c6a');
     
     this.ctx.strokeStyle = gradient;
-    this.ctx.lineWidth = 5;
+    this.ctx.lineWidth = 6;
     this.ctx.lineCap = 'round';
+    this.ctx.shadowBlur = 5;
+    this.ctx.shadowColor = 'rgba(45, 80, 55, 0.5)';
+    
     this.ctx.beginPath();
     this.ctx.moveTo(this.centerX, this.canvas.height);
     
@@ -700,6 +715,8 @@ class InteractiveRose {
       this.centerX, this.centerY + 50
     );
     this.ctx.stroke();
+    
+    this.ctx.shadowBlur = 0;
   }
   
   drawLeaf(x, y, angle) {
@@ -707,22 +724,39 @@ class InteractiveRose {
     this.ctx.translate(x, y);
     this.ctx.rotate(angle);
     
-    const gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 25);
-    gradient.addColorStop(0, '#5a8c6a');
+    const gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 28);
+    gradient.addColorStop(0, '#6ba876');
+    gradient.addColorStop(0.5, '#5a8c6a');
     gradient.addColorStop(1, '#3d6647');
     
+    // Leaf shadow
+    this.ctx.shadowBlur = 8;
+    this.ctx.shadowColor = 'rgba(45, 80, 55, 0.4)';
+    
     this.ctx.beginPath();
-    this.ctx.ellipse(0, 0, 18, 30, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(0, 0, 20, 32, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = gradient;
     this.ctx.fill();
     
+    this.ctx.shadowBlur = 0;
+    
     // Leaf vein
-    this.ctx.strokeStyle = 'rgba(61, 102, 71, 0.5)';
-    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = 'rgba(61, 102, 71, 0.6)';
+    this.ctx.lineWidth = 1.5;
     this.ctx.beginPath();
-    this.ctx.moveTo(0, -25);
-    this.ctx.lineTo(0, 25);
+    this.ctx.moveTo(0, -28);
+    this.ctx.lineTo(0, 28);
     this.ctx.stroke();
+    
+    // Side veins
+    for (let i = -20; i <= 20; i += 10) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, i);
+      this.ctx.lineTo(i > 0 ? 10 : -10, i);
+      this.ctx.strokeStyle = 'rgba(61, 102, 71, 0.3)';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+    }
     
     this.ctx.restore();
   }
@@ -733,54 +767,93 @@ class InteractiveRose {
     this.ctx.rotate(petal.angle + (petal.rotation * progress));
     
     const distance = petal.size * progress;
-    const width = 32 * progress;
-    const height = 45 * progress;
+    const width = 35 * progress;
+    const height = 48 * progress;
     
-    // Petal gradient
+    // Petal gradient - more vibrant colors
     const gradient = this.ctx.createRadialGradient(0, -distance, 0, 0, -distance, width);
-    gradient.addColorStop(0, '#ffc1d9');
-    gradient.addColorStop(0.4, '#ff8fb5');
-    gradient.addColorStop(0.7, '#ff6b9d');
-    gradient.addColorStop(1, '#d9457a');
+    gradient.addColorStop(0, '#ffcce0');
+    gradient.addColorStop(0.3, '#ffa6c9');
+    gradient.addColorStop(0.6, '#ff8fb5');
+    gradient.addColorStop(0.85, '#ff6b9d');
+    gradient.addColorStop(1, '#e85894');
+    
+    // Draw petal with shadow
+    this.ctx.shadowBlur = 20;
+    this.ctx.shadowColor = 'rgba(255, 107, 157, 0.7)';
     
     this.ctx.beginPath();
     this.ctx.ellipse(0, -distance, width, height, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = gradient;
-    this.ctx.shadowBlur = 15;
-    this.ctx.shadowColor = 'rgba(255, 107, 157, 0.6)';
+    this.ctx.fill();
+    
+    // Add petal highlight
+    this.ctx.shadowBlur = 0;
+    const highlightGradient = this.ctx.createRadialGradient(
+      -width * 0.3, -distance - height * 0.2, 0,
+      0, -distance, width * 0.8
+    );
+    highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+    highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    
+    this.ctx.beginPath();
+    this.ctx.ellipse(0, -distance, width * 0.8, height * 0.8, 0, 0, Math.PI * 2);
+    this.ctx.fillStyle = highlightGradient;
     this.ctx.fill();
     
     this.ctx.restore();
   }
   
   drawCenter() {
-    const centerRadius = 18 * this.bloomProgress;
+    const centerRadius = 20 * this.bloomProgress;
+    
+    // Outer glow
+    const outerGlow = this.ctx.createRadialGradient(
+      this.centerX, this.centerY, 0,
+      this.centerX, this.centerY, centerRadius * 2
+    );
+    outerGlow.addColorStop(0, 'rgba(255, 215, 0, 0.3)');
+    outerGlow.addColorStop(1, 'rgba(255, 215, 0, 0)');
+    
+    this.ctx.beginPath();
+    this.ctx.arc(this.centerX, this.centerY, centerRadius * 2, 0, Math.PI * 2);
+    this.ctx.fillStyle = outerGlow;
+    this.ctx.fill();
+    
+    // Main center
     const gradient = this.ctx.createRadialGradient(
       this.centerX, this.centerY, 0,
       this.centerX, this.centerY, centerRadius
     );
-    gradient.addColorStop(0, '#ffe14d');
-    gradient.addColorStop(0.7, '#ffd700');
-    gradient.addColorStop(1, '#cc9900');
+    gradient.addColorStop(0, '#fff4b3');
+    gradient.addColorStop(0.5, '#ffe14d');
+    gradient.addColorStop(0.8, '#ffd700');
+    gradient.addColorStop(1, '#d4a800');
+    
+    this.ctx.shadowBlur = 15;
+    this.ctx.shadowColor = 'rgba(255, 215, 0, 0.9)';
     
     this.ctx.beginPath();
     this.ctx.arc(this.centerX, this.centerY, centerRadius, 0, Math.PI * 2);
     this.ctx.fillStyle = gradient;
-    this.ctx.shadowBlur = 10;
-    this.ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
     this.ctx.fill();
     
-    // Add texture to center
-    for (let i = 0; i < 20 * this.bloomProgress; i++) {
-      const angle = (i / 20) * Math.PI * 2;
-      const radius = 10 * this.bloomProgress;
-      const x = this.centerX + Math.cos(angle) * radius;
-      const y = this.centerY + Math.sin(angle) * radius;
-      
-      this.ctx.beginPath();
-      this.ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-      this.ctx.fillStyle = 'rgba(204, 153, 0, 0.6)';
-      this.ctx.fill();
+    this.ctx.shadowBlur = 0;
+    
+    // Add texture dots to center
+    if (this.bloomProgress > 0.5) {
+      const dotCount = Math.floor(25 * this.bloomProgress);
+      for (let i = 0; i < dotCount; i++) {
+        const angle = (i / dotCount) * Math.PI * 2;
+        const radius = (centerRadius * 0.6) * (0.5 + Math.random() * 0.5);
+        const x = this.centerX + Math.cos(angle) * radius;
+        const y = this.centerY + Math.sin(angle) * radius;
+        
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+        this.ctx.fillStyle = 'rgba(204, 153, 0, 0.7)';
+        this.ctx.fill();
+      }
     }
   }
   
