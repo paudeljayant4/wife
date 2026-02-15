@@ -306,7 +306,7 @@ class ConstellationName {
           alpha: 0,
           targetAlpha: 1,
           radius: CONFIG.constellation.starSize,
-          delay: (letterIndex * letter.length + pointIndex) * 30,
+          delay: (letterIndex * letter.length + pointIndex) * 6, // Changed from 30 to 6 (5x faster)
           letterIndex: letterIndex
         });
       });
@@ -321,10 +321,10 @@ class ConstellationName {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       
       this.constellationStars.forEach((star, index) => {
-        // Fade in based on delay
+        // Fade in based on delay - much faster
         if (this.drawProgress > star.delay) {
           if (star.alpha < star.targetAlpha) {
-            star.alpha += 0.03;
+            star.alpha += 0.08; // Changed from 0.03 to 0.08 for faster fade
           }
         }
         
@@ -361,7 +361,7 @@ class ConstellationName {
     
     setTimeout(() => {
       this.animationId = requestAnimationFrame(animate);
-    }, 2500); // Start after main title appears
+    }, 2000); // Start earlier - changed from 2500 to 2000
   }
   
   destroy() {
@@ -638,7 +638,7 @@ class InteractiveRose {
   }
   
   bloom() {
-    if (this.isBloming) return;
+    if (this.isBloming) return; // Already bloomed, keep it permanent
     this.isBloming = true;
     playAudioFeedback('bloom');
     
@@ -653,6 +653,7 @@ class InteractiveRose {
         if (this.message) {
           this.message.classList.add('revealed');
         }
+        // Don't reset - keep the rose bloomed permanently
       }
     };
     
