@@ -125,11 +125,11 @@ main {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SHOOTING STARS & PARTICLE HEARTS
+   SHOOTING STARS 
    ═══════════════════════════════════════════════════════════ */
 
 #shooting-stars-canvas,
-#particle-hearts-canvas {
+{
   position: fixed;
   top: 0;
   left: 0;
@@ -139,11 +139,6 @@ main {
   pointer-events: none;
 }
 
-#particle-hearts-canvas {
-  z-index: 2;
-  pointer-events: all; /* Allow clicks */
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">💕</text></svg>') 12 12, auto;
-}
 
 /* ═══════════════════════════════════════════════════════════
    AUDIO CONTROL
