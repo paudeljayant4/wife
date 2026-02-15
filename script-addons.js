@@ -1,7 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
    OUR UNIVERSE - ADDONS
-   New Features: Shooting Stars,,
- Sound Effects
+   Features: Shooting Stars and Sound Effects
    ═══════════════════════════════════════════════════════════ */
 
 // ═══════════════════════════════════════════════════════════
@@ -11,7 +10,6 @@
 class SoundEffects {
   constructor() {
     this.audioContext = null;
-    this.sounds = {};
     this.enabled = CONFIG.soundEffects.enabled;
     this.volume = CONFIG.soundEffects.volume;
     
@@ -28,9 +26,23 @@ class SoundEffects {
       this.enabled = false;
     }
   }
+
+  ensureAudioReady() {
+    if (!this.enabled || !this.audioContext || this.audioContext.state === 'closed') {
+      return false;
+    }
+
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume().catch(() => {
+        // Some browsers require a user gesture before resuming audio.
+      });
+    }
+
+    return true;
+  }
   
   playChime() {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.ensureAudioReady()) return;
     
     const now = this.audioContext.currentTime;
     const oscillator = this.audioContext.createOscillator();
@@ -50,7 +62,7 @@ class SoundEffects {
   }
   
   playBloom() {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.ensureAudioReady()) return;
     
     const now = this.audioContext.currentTime;
     const oscillator = this.audioContext.createOscillator();
@@ -71,7 +83,7 @@ class SoundEffects {
   }
   
   playRustle() {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.ensureAudioReady()) return;
     
     const now = this.audioContext.currentTime;
     const bufferSize = this.audioContext.sampleRate * 0.3;
@@ -99,7 +111,7 @@ class SoundEffects {
   }
   
   playWhoosh() {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.ensureAudioReady()) return;
     
     const now = this.audioContext.currentTime;
     const oscillator = this.audioContext.createOscillator();
@@ -136,6 +148,7 @@ class ShootingStars {
     if (!this.canvas) return;
     
     this.ctx = this.canvas.getContext('2d');
+    if (!this.ctx) return;
     this.shootingStars = [];
     this.animationId = null;
     
@@ -158,9 +171,18 @@ class ShootingStars {
   }
   
   startCreatingStars() {
+    if (this.starInterval) {
+      clearInterval(this.starInterval);
+    }
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+
     this.createShootingStar();
     this.starInterval = setInterval(() => {
-      this.createShootingStar();
+      if (state.isTabVisible) {
+        this.createShootingStar();
+      }
     }, CONFIG.shootingStars.frequency);
   }
   
@@ -179,7 +201,7 @@ class ShootingStars {
       size: 2 + Math.random() * 2
     });
     
-    if (state.instances.soundEffects) {
+    if (state.isTabVisible && state.instances.soundEffects) {
       state.instances.soundEffects.playWhoosh();
     }
   }
@@ -192,30 +214,32 @@ class ShootingStars {
     
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     
-    this.shootingStars.forEach((star, index) => {
+    for (let index = this.shootingStars.length - 1; index >= 0; index -= 1) {
+      const star = this.shootingStars[index];
+
       // Update position
       star.x += star.vx;
       star.y += star.vy;
-      
+
       // Add to trail
       star.trail.push({ x: star.x, y: star.y, alpha: star.life });
       if (star.trail.length > CONFIG.shootingStars.trailLength) {
         star.trail.shift();
       }
-      
+
       // Fade out
       star.life -= 0.01;
-      
+
       // Draw trail
       star.trail.forEach((point, i) => {
         const alpha = (i / star.trail.length) * point.alpha;
         const size = star.size * (i / star.trail.length);
-        
+
         this.ctx.beginPath();
         this.ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
         this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         this.ctx.fill();
-        
+
         // Sparkles
         if (i % 5 === 0) {
           this.ctx.beginPath();
@@ -224,12 +248,12 @@ class ShootingStars {
           this.ctx.fill();
         }
       });
-      
+
       // Remove dead stars
       if (star.life <= 0 || star.x > this.canvas.width || star.y > this.canvas.height) {
         this.shootingStars.splice(index, 1);
       }
-    });
+    }
     
     this.animationId = requestAnimationFrame(() => this.animate());
   }
@@ -240,6 +264,9 @@ class ShootingStars {
     }
     if (this.starInterval) {
       clearInterval(this.starInterval);
+    }
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
     }
   }
 }
