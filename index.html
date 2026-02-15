@@ -28,6 +28,12 @@
     <!-- Animated Star Background -->
     <canvas id="star-canvas" aria-hidden="true"></canvas>
     
+    <!-- Shooting Stars Canvas -->
+    <canvas id="shooting-stars-canvas" aria-hidden="true"></canvas>
+    
+    <!-- Particle Hearts Canvas -->
+    <canvas id="particle-hearts-canvas" aria-hidden="true"></canvas>
+    
     <!-- Background Music -->
     <!-- IMPORTANT: Replace with your own romantic piano MP3 for best experience -->
     <!-- Suggested tracks: "River Flows in You", "Clair de Lune", "Comptine d'un autre été" -->
@@ -63,9 +69,8 @@
       <section id="opening" class="panel full-screen">
         <div class="opening-content">
           <p id="typed-line" class="typed" aria-live="polite"></p>
-          <h1 id="constellation-name">Himani</h1>
         </div>
-        <button id="scroll-next" class="glow-btn scroll-indicator" aria-label="Continue to next section">
+        <button class="glow-btn scroll-indicator scroll-btn" data-target="rose-section" aria-label="Continue to rose section">
           Continue ↓
         </button>
       </section>
@@ -80,6 +85,9 @@
         <p id="rose-message" class="hidden-message" aria-live="polite">
           Himani, you're the most beautiful part of my story. 🌹
         </p>
+        <button class="glow-btn scroll-btn" data-target="timeline" aria-label="Continue to timeline">
+          Continue ↓
+        </button>
       </section>
       
       <!-- Timeline Section: Our Story -->
@@ -118,6 +126,65 @@
             </div>
           </article>
         </div>
+        <button class="glow-btn scroll-btn" data-target="love-notes-section" aria-label="Continue to love notes">
+          Continue ↓
+        </button>
+      </section>
+      
+      <!-- Love Notes Jar Section -->
+      <section id="love-notes-section" class="panel full-screen">
+        <div class="love-notes-container">
+          <h2>Love Notes for Himani</h2>
+          <p class="section-subtitle">Click the jar to reveal a sweet message 💌</p>
+          <div id="love-jar" class="love-jar">
+            <div class="jar-body">
+              <div class="jar-lid"></div>
+              <div class="jar-label">Pull a note</div>
+              <div class="jar-hearts">
+                <span class="jar-heart">💕</span>
+                <span class="jar-heart">💖</span>
+                <span class="jar-heart">💝</span>
+              </div>
+            </div>
+          </div>
+          <div id="love-note" class="love-note hidden">
+            <div class="note-paper">
+              <p id="note-text"></p>
+              <button id="another-note" class="glow-btn secondary-btn">Another Note</button>
+            </div>
+          </div>
+        </div>
+        <button class="glow-btn scroll-btn" data-target="reasons-section" aria-label="Continue to reasons">
+          Continue ↓
+        </button>
+      </section>
+      
+      <!-- Reasons I Love You Section -->
+      <section id="reasons-section" class="panel">
+        <h2>Infinite Reasons I Love You</h2>
+        <p class="section-subtitle">Scroll to discover them all... 💝</p>
+        <div id="reasons-list" class="reasons-list">
+          <!-- Reasons will be dynamically added here -->
+        </div>
+        <div class="reasons-footer">
+          <p>And there are infinity more reasons... ∞</p>
+        </div>
+        <button class="glow-btn scroll-btn" data-target="rose-3d-section" aria-label="Continue to 3D rose">
+          Continue ↓
+        </button>
+      </section>
+      
+      <!-- 3D Rose Section -->
+      <section id="rose-3d-section" class="panel full-screen">
+        <div class="section-header">
+          <h2>A Rose That Never Wilts</h2>
+          <p>Drag to rotate • Blow into your mic to make petals fall 🌹</p>
+        </div>
+        <div id="rose-3d-container"></div>
+        <button id="reset-petals" class="glow-btn secondary-btn">Reset Petals</button>
+        <button class="glow-btn scroll-btn" data-target="letter-section" aria-label="Continue to letter">
+          Continue ↓
+        </button>
       </section>
       
       <!-- Letter Section: Secret Message -->
@@ -135,6 +202,9 @@
           </div>
         </button>
         <p class="hint">Click the envelope</p>
+        <button class="glow-btn scroll-btn" data-target="ending" aria-label="Continue to ending">
+          Continue ↓
+        </button>
       </section>
       
       <!-- Ending Section: Fireflies & Final Message -->
@@ -160,6 +230,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Addon Features -->
+    <script src="script-addons.js"></script>
     
     <!-- Main Script -->
     <script src="script.js"></script>
