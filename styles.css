@@ -65,43 +65,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-/* Accessible no-script fallback */
-.noscript-warning {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10001;
-  padding: 0.9rem 1rem;
-  background: rgba(10, 14, 39, 0.95);
-  color: var(--moonlight);
-  border-bottom: 1px solid rgba(212, 165, 255, 0.35);
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-button:focus-visible,
-.glow-btn:focus-visible,
-#audio-control:focus-visible,
-#envelope:focus-visible {
-  outline: 2px solid var(--rose-gold);
-  outline-offset: 3px;
-  box-shadow: 0 0 0 6px rgba(244, 194, 194, 0.2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
 main {
   position: relative;
   z-index: 1;
@@ -162,7 +125,7 @@ main {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SHOOTING STARS 
+   SHOOTING STARS & PARTICLE HEARTS
    ═══════════════════════════════════════════════════════════ */
 
 #shooting-stars-canvas {
@@ -174,7 +137,6 @@ main {
   z-index: 1;
   pointer-events: none;
 }
-
 
 /* ═══════════════════════════════════════════════════════════
    AUDIO CONTROL
@@ -554,9 +516,8 @@ p {
   margin-top: 0;
 }
 
-/* Timeline and reasons sections - scroll button after content */
-#timeline .scroll-btn,
-#reasons-section .scroll-btn {
+/* Timeline sections - scroll button after content */
+#timeline .scroll-btn {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -768,6 +729,158 @@ p {
   line-height: 1.8;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   LOVE NOTES JAR SECTION
+   ═══════════════════════════════════════════════════════════ */
+
+#love-notes-section {
+  text-align: center;
+}
+
+.love-notes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--stardust);
+  opacity: 0.8;
+  font-style: italic;
+  margin-top: -1rem;
+}
+
+.love-jar {
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  animation: float 3s ease-in-out infinite;
+}
+
+.love-jar:hover {
+  transform: scale(1.05) translateY(-10px);
+}
+
+.jar-body {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.8));
+  border-radius: 20px 20px 30px 30px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 0 30px rgba(212, 165, 255, 0.2);
+  border: 3px solid rgba(212, 165, 255, 0.5);
+  overflow: hidden;
+}
+
+.jar-lid {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 40px;
+  background: linear-gradient(145deg, #d4a574, #c9956a);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid #b8865f;
+}
+
+.jar-lid::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 15px;
+  background: #a07555;
+  border-radius: 5px;
+}
+
+.jar-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--nebula-purple);
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+}
+
+.jar-hearts {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  font-size: 2rem;
+}
+
+.jar-heart {
+  animation: bobble 2s ease-in-out infinite;
+}
+
+.jar-heart:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.jar-heart:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes bobble {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.love-note {
+  margin-top: var(--spacing-lg);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: var(--transition-smooth);
+}
+
+.love-note.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.love-note.hidden {
+  display: none;
+}
+
+.note-paper {
+  background: linear-gradient(145deg, #fff9e6, #fffef8);
+  padding: var(--spacing-lg);
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  border: 2px solid var(--rose-gold);
+  position: relative;
+}
+
+.note-paper::before {
+  content: '📝';
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  font-size: 3rem;
+}
+
+#note-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--nebula-purple);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-md);
+  font-style: italic;
+}
 
 /* ═══════════════════════════════════════════════════════════
    LETTER SECTION
