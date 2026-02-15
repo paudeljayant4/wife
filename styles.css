@@ -1,1119 +1,820 @@
 /* ═══════════════════════════════════════════════════════════
-   OUR UNIVERSE - Enhanced Romantic Celestial Experience
-   Design: Deep space romance with ethereal interactions
-   Version: 2.0 - Improved & Polished
+   OUR UNIVERSE - ADDONS
+   New Features: Shooting Stars, Particle Hearts, Love Notes,
+   Reasons I Love You, 3D Rose, Sound Effects
    ═══════════════════════════════════════════════════════════ */
 
-:root {
-  /* Color Palette - Cosmic Romance */
-  --night-sky: #0a0e27;
-  --deep-space: #1a1d35;
-  --midnight-blue: #161b33;
-  --nebula-purple: #6b4c9a;
-  --nebula-light: #8b6bb7;
-  --stardust: #d4a5ff;
-  --rose-gold: #f4c2c2;
-  --rose-pink: #ff6b9d;
-  --moonlight: #e8f4ff;
-  --constellation: #ffd700;
-  --warm-glow: #ffb347;
-  
-  /* Typography */
-  --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'Inter', sans-serif;
-  
-  /* Spacing & Timing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 2rem;
-  --spacing-lg: 4rem;
-  --spacing-xl: 6rem;
-  
-  --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --transition-elastic: all 1s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  
-  /* Effects */
-  --glow-soft: 0 0 20px rgba(212, 165, 255, 0.3);
-  --glow-medium: 0 0 40px rgba(212, 165, 255, 0.5);
-  --glow-strong: 0 0 60px rgba(212, 165, 255, 0.8);
-  --shadow-depth: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   BASE STYLES & RESET
-   ═══════════════════════════════════════════════════════════ */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-body);
-  background: var(--night-sky);
-  color: var(--moonlight);
-  overflow-x: hidden;
-  position: relative;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-main {
-  position: relative;
-  z-index: 1;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   LOADING SCREEN
-   ═══════════════════════════════════════════════════════════ */
-
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--night-sky);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.8s ease;
-}
-
-.loading-screen.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(212, 165, 255, 0.1);
-  border-top-color: var(--stardust);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: var(--spacing-md);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STAR CANVAS BACKGROUND
-   ═══════════════════════════════════════════════════════════ */
-
-#star-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SHOOTING STARS & PARTICLE HEARTS
-   ═══════════════════════════════════════════════════════════ */
-
-#shooting-stars-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   AUDIO CONTROL
-   ═══════════════════════════════════════════════════════════ */
-
-.audio-control {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 60px;
-  height: 60px;
-  background: rgba(26, 29, 53, 0.9);
-  border: 2px solid var(--stardust);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  z-index: 1000;
-  transition: var(--transition-smooth);
-  backdrop-filter: blur(10px);
-  box-shadow: 
-    0 5px 20px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(212, 165, 255, 0.3);
-  animation: pulseGlow 3s ease-in-out infinite;
-}
-
-.audio-control:hover {
-  transform: scale(1.1);
-  box-shadow: 
-    0 8px 30px rgba(0, 0, 0, 0.4),
-    0 0 50px rgba(212, 165, 255, 0.6);
-  border-color: var(--moonlight);
-}
-
-.audio-control:active {
-  transform: scale(0.95);
-}
-
-.audio-icon {
-  position: absolute;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.audio-control .paused {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.audio-control.paused .playing {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.audio-control.paused .paused {
-  opacity: 1;
-  transform: scale(1);
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 
-      0 5px 20px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(212, 165, 255, 0.3);
-  }
-  50% {
-    box-shadow: 
-      0 8px 25px rgba(0, 0, 0, 0.4),
-      0 0 40px rgba(212, 165, 255, 0.5);
-  }
-}
-
-@media (max-width: 768px) {
-  .audio-control {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 50px;
-    height: 50px;
-    font-size: 1.25rem;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TYPOGRAPHY
-   ═══════════════════════════════════════════════════════════ */
-
-h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
-}
-
-h1 {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  background: linear-gradient(135deg, var(--moonlight), var(--stardust), var(--nebula-light));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 8s ease infinite;
-  filter: drop-shadow(0 0 30px rgba(212, 165, 255, 0.4));
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-h2 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  color: var(--rose-gold);
-  text-shadow: 0 0 30px rgba(244, 194, 194, 0.5), 0 0 60px rgba(244, 194, 194, 0.3);
-}
-
-h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  color: var(--stardust);
-  margin-bottom: var(--spacing-sm);
-  text-shadow: var(--glow-soft);
-}
-
-p {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 300;
-  color: var(--moonlight);
-  opacity: 0.92;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   INTRO OVERLAY
-   ═══════════════════════════════════════════════════════════ */
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, var(--deep-space), var(--night-sky));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.8s ease;
-}
-
-.overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.overlay-card {
-  text-align: center;
-  padding: var(--spacing-lg) var(--spacing-lg);
-  background: rgba(26, 29, 53, 0.85);
-  border: 2px solid rgba(212, 165, 255, 0.3);
-  border-radius: 24px;
-  backdrop-filter: blur(30px);
-  box-shadow: 
-    var(--shadow-depth),
-    0 0 100px rgba(107, 76, 154, 0.3) inset,
-    0 0 200px rgba(107, 76, 154, 0.1);
-  animation: floatIn 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-  max-width: 500px;
-  margin: var(--spacing-md);
-}
-
-.heart-icon {
-  font-size: 5rem;
-  margin-bottom: var(--spacing-md);
-  animation: heartbeat 2.5s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.6));
-}
-
-.overlay-card h1 {
-  margin-bottom: var(--spacing-md);
-}
-
-.overlay-card p {
-  font-size: 1.125rem;
-  margin-bottom: var(--spacing-md);
-}
-
-@keyframes floatIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes heartbeat {
-  0%, 100% { 
-    transform: scale(1); 
-  }
-  10% { 
-    transform: scale(1.15); 
-  }
-  20% { 
-    transform: scale(1); 
-  }
-  30% { 
-    transform: scale(1.1); 
-  }
-  40% { 
-    transform: scale(1); 
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════════════════════ */
-
-.glow-btn {
-  font-family: var(--font-body);
-  font-size: 1.125rem;
-  font-weight: 500;
-  padding: 1.125rem 3rem;
-  margin-top: var(--spacing-md);
-  background: linear-gradient(135deg, var(--nebula-purple), var(--nebula-light), var(--stardust));
-  background-size: 200% 200%;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 10px 30px rgba(107, 76, 154, 0.5),
-    0 0 0 0 rgba(212, 165, 255, 0.5);
-  transition: var(--transition-smooth);
-  z-index: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.glow-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.glow-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.glow-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 
-    0 15px 50px rgba(107, 76, 154, 0.7),
-    0 0 50px rgba(212, 165, 255, 0.9);
-  background-position: 100% 50%;
-}
-
-.glow-btn:hover::before {
-  width: 400px;
-  height: 400px;
-}
-
-.glow-btn:hover::after {
-  opacity: 1;
-}
-
-.glow-btn:active {
-  transform: translateY(-1px) scale(1);
-}
-
-.secondary-btn {
-  background: linear-gradient(135deg, rgba(107, 76, 154, 0.3), rgba(212, 165, 255, 0.3));
-  border: 2px solid var(--stardust);
-  font-size: 1rem;
-  padding: 0.875rem 2rem;
-  margin-top: var(--spacing-lg);
-}
-
-.secondary-btn:hover {
-  background: linear-gradient(135deg, rgba(107, 76, 154, 0.5), rgba(212, 165, 255, 0.5));
-  border-color: var(--moonlight);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   PANELS & SECTIONS
-   ═══════════════════════════════════════════════════════════ */
-
-.panel {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: var(--spacing-lg) var(--spacing-md);
-  z-index: 1;
-  margin-bottom: var(--spacing-xl); /* Add gap between sections */
-}
-
-.full-screen {
-  height: 100vh;
-  margin-bottom: 0; /* Full screen sections don't need extra margin */
-}
-
-/* Add extra spacing for non-full-screen sections */
-#timeline,
-#love-notes-section:not(.full-screen) {
-  padding-top: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   OPENING SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-#opening {
-  text-align: center;
-}
-
-.opening-content {
-  max-width: 900px;
-  margin-bottom: var(--spacing-lg);
-}
-
-.typed {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  color: var(--constellation);
-  font-style: italic;
-  margin-bottom: var(--spacing-lg);
-  opacity: 0;
-  animation: fadeInUp 1.2s ease forwards 0.5s;
-  position: relative;
-}
-
-.typed::after {
-  content: '|';
-  animation: blink 1s step-end infinite;
-}
-
-.typed.finished::after {
-  content: '';
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-}
-
-@keyframes floatUpDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ROSE SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-#rose-section {
-  text-align: center;
-  gap: var(--spacing-md);
-}
-
-.section-header {
-  margin-bottom: var(--spacing-lg);
-  animation: fadeIn 1s ease;
-}
-
-.section-header h2 {
-  margin-bottom: var(--spacing-sm);
-}
-
-.section-header p {
-  font-size: 1.125rem;
-  opacity: 0.8;
-}
-
-#rose-canvas {
-  max-width: 550px;
-  width: 100%;
-  height: 550px;
-  cursor: pointer;
-  filter: drop-shadow(0 0 30px rgba(244, 194, 194, 0.5));
-  transition: var(--transition-smooth);
-  border-radius: 50%;
-}
-
-#rose-canvas:hover {
-  filter: drop-shadow(0 0 60px rgba(244, 194, 194, 0.9));
-  transform: scale(1.03);
-}
-
-#rose-canvas:active {
-  transform: scale(0.98);
-}
-
-.hidden-message {
-  opacity: 0;
-  margin-top: var(--spacing-md);
-  font-size: 1.75rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  color: var(--rose-gold);
-  transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
-  transform: translateY(30px);
-  text-shadow: var(--glow-soft);
-}
-
-.hidden-message.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TIMELINE SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-#timeline {
-  max-width: 900px;
-  width: 100%;
-}
-
-#timeline h2 {
-  margin-bottom: var(--spacing-xl);
-  text-align: center;
-}
-
-.timeline-container {
-  position: relative;
-  padding-left: var(--spacing-md);
-}
-
-.timeline-container::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, 
-    transparent, 
-    var(--stardust) 10%, 
-    var(--stardust) 90%, 
-    transparent
-  );
-  box-shadow: 0 0 10px var(--stardust);
-}
-
-.timeline-item {
-  position: relative;
-  margin-bottom: var(--spacing-xl);
-  padding-left: var(--spacing-lg);
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: var(--transition-smooth);
-}
-
-.timeline-item.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.timeline-marker {
-  position: absolute;
-  left: -10px;
-  top: 0;
-  width: 20px;
-  height: 20px;
-  background: var(--constellation);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 0 4px var(--night-sky),
-    0 0 0 6px var(--stardust),
-    0 0 20px var(--constellation);
-  animation: pulse-marker 3s ease-in-out infinite;
-  z-index: 2;
-}
-
-.timeline-item.visible .timeline-marker {
-  animation: pulse-marker 3s ease-in-out infinite, pop-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes pulse-marker {
-  0%, 100% { 
-    transform: scale(1); 
-    box-shadow: 
-      0 0 0 4px var(--night-sky),
-      0 0 0 6px var(--stardust),
-      0 0 20px var(--constellation);
-  }
-  50% { 
-    transform: scale(1.2); 
-    box-shadow: 
-      0 0 0 4px var(--night-sky),
-      0 0 0 8px var(--stardust),
-      0 0 30px var(--constellation);
-  }
-}
-
-@keyframes pop-in {
-  0% { 
-    transform: scale(0); 
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% { 
-    transform: scale(1); 
-    opacity: 1;
-  }
-}
-
-.timeline-content {
-  background: rgba(26, 29, 53, 0.6);
-  padding: var(--spacing-md);
-  border-radius: 16px;
-  border: 1px solid rgba(212, 165, 255, 0.2);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: var(--transition-smooth);
-}
-
-.timeline-item:hover .timeline-content {
-  border-color: rgba(212, 165, 255, 0.5);
-  box-shadow: 0 15px 40px rgba(107, 76, 154, 0.4);
-  transform: translateX(5px);
-}
-
-.timeline-content h3 {
-  margin-bottom: var(--spacing-xs);
-}
-
-.timeline-content p {
-  font-size: 1.125rem;
-  line-height: 1.8;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   LETTER SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-#letter-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-#envelope {
-  position: relative;
-  width: min(450px, 90vw);
-  height: min(300px, 60vw); /* Slightly taller for better fit */
-  background: linear-gradient(145deg, #fef8e8, #f5e6d3);
-  border: none;
-  cursor: pointer;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 5px 15px rgba(0, 0, 0, 0.3);
-  transition: var(--transition-bounce);
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-#envelope:hover {
-  transform: translateY(-15px) rotateX(8deg);
-  box-shadow: 
-    0 35px 90px rgba(0, 0, 0, 0.6),
-    0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: min(225px, 45vw) solid transparent;
-  border-right: min(225px, 45vw) solid transparent;
-  border-top: min(150px, 30vw) solid #d4a574; /* Adjusted for taller envelope */
-  transform-origin: top center;
-  transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: 3;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
-}
-
-#envelope.open .envelope-flap {
-  transform: rotateX(-180deg);
-}
-
-.letter-paper {
-  position: absolute;
-  top: 10%;
-  left: 8%;
-  right: 8%;
-  bottom: 15%;
-  background: linear-gradient(to bottom, #ffffff, #fffef8);
-  padding: var(--spacing-sm) var(--spacing-sm);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Space between text and closing */
-  font-family: var(--font-display);
-  font-size: clamp(0.85rem, 1.8vw, 1rem);
-  line-height: 1.7;
-  color: #2d2d2d;
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
-  z-index: 2;
-  border-radius: 4px;
-  overflow: hidden; /* Prevent text overflow */
-}
-
-#envelope.open .letter-paper {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.letter-text {
-  color: #333;
-  opacity: 1;
-  text-align: center;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.closing {
-  font-style: italic;
-  font-weight: 600;
-  color: var(--nebula-purple);
-  margin-top: auto;
-  padding-top: var(--spacing-xs);
-  text-align: center;
-  font-size: 1em;
-  flex-shrink: 0; /* Prevent shrinking */
-}
-
-.hint {
-  font-size: 1rem;
-  color: var(--stardust);
-  opacity: 0.8;
-  animation: pulse-hint 2.5s ease-in-out infinite;
-  transition: opacity 0.5s ease;
-}
-
-#envelope.open + .hint {
-  opacity: 0;
-}
-
-@keyframes pulse-hint {
-  0%, 100% { 
-    opacity: 0.6; 
-    transform: translateY(0);
-  }
-  50% { 
-    opacity: 1; 
-    transform: translateY(-5px);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ENDING SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-#ending {
-  position: relative;
-  text-align: center;
-}
-
-#firefly-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.ending-text {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-lg);
-}
-
-.ending-text h2 {
-  margin-bottom: var(--spacing-md);
-  animation: fadeInScale 2s ease forwards;
-  text-align: center;
-  line-height: 1.4;
-}
-
-/* Beautiful animated final message */
-.final-message-line {
-  opacity: 0;
-  transform: translateY(50px) scale(0.8);
-  display: block;
-  margin-bottom: var(--spacing-sm);
-}
-
-#final-message-line1 {
-  animation: revealLine 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.6) forwards 0.5s;
-  font-size: clamp(3rem, 8vw, 6rem);
-  background: linear-gradient(135deg, var(--rose-pink), var(--rose-gold), var(--stardust));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: revealLine 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.6) forwards 0.5s,
-             gradientShift 8s ease infinite 2s;
-  filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.6));
-}
-
-#final-message-line2 {
-  animation: revealLine 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.6) forwards 1.2s;
-  font-size: clamp(3rem, 8vw, 6rem);
-  background: linear-gradient(135deg, var(--constellation), var(--warm-glow), var(--rose-gold));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: revealLine 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.6) forwards 1.2s,
-             gradientShift 8s ease infinite 2.7s;
-  filter: drop-shadow(0 0 40px rgba(255, 180, 71, 0.6));
-}
-
-@keyframes revealLine {
-  0% {
-    opacity: 0;
-    transform: translateY(50px) scale(0.8) rotateX(-45deg);
-  }
-  60% {
-    transform: translateY(-10px) scale(1.05) rotateX(5deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1) rotateX(0deg);
-  }
-}
-
-.heart-pulse {
-  width: 120px;
-  height: 120px;
-  position: relative;
-  opacity: 0;
-  animation: glowPulse 2.5s ease-in-out infinite, fadeIn 1s ease forwards 2s;
-}
-
-.heart-pulse::before,
-.heart-pulse::after {
-  content: '';
-  position: absolute;
-  width: 60px;
-  height: 95px;
-  background: linear-gradient(135deg, var(--rose-pink), var(--rose-gold));
-  border-radius: 60px 60px 0 0;
-  box-shadow: 
-    0 0 40px rgba(244, 194, 194, 0.9),
-    0 0 80px rgba(255, 107, 157, 0.5) inset;
-}
-
-.heart-pulse::before {
-  left: 60px;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-
-.heart-pulse::after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
-
-@keyframes fadeInScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.7) translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes glowPulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 25px rgba(244, 194, 194, 0.9));
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 50px rgba(255, 107, 157, 1));
-    transform: scale(1.15);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE DESIGN
-   ═══════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-  :root {
-    --spacing-lg: 3rem;
-    --spacing-xl: 4rem;
+// ═══════════════════════════════════════════════════════════
+// SOUND EFFECTS SYSTEM
+// ═══════════════════════════════════════════════════════════
+
+class SoundEffects {
+  constructor() {
+    this.audioContext = null;
+    this.sounds = {};
+    this.enabled = CONFIG.soundEffects.enabled;
+    this.volume = CONFIG.soundEffects.volume;
+    
+    if (this.enabled) {
+      this.initAudioContext();
+    }
   }
   
-  .panel {
-    padding: var(--spacing-lg) var(--spacing-sm);
+  initAudioContext() {
+    try {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (error) {
+      console.log('Web Audio API not supported');
+      this.enabled = false;
+    }
   }
   
-  .overlay-card {
-    padding: var(--spacing-lg) var(--spacing-md);
+  playChime() {
+    if (!this.enabled || !this.audioContext) return;
+    
+    const now = this.audioContext.currentTime;
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(800, now);
+    oscillator.frequency.exponentialRampToValueAtTime(1200, now + 0.3);
+    
+    gainNode.gain.setValueAtTime(this.volume, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    
+    oscillator.start(now);
+    oscillator.stop(now + 0.3);
   }
   
-  #rose-canvas {
-    max-width: 400px;
-    height: 400px;
+  playBloom() {
+    if (!this.enabled || !this.audioContext) return;
+    
+    const now = this.audioContext.currentTime;
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(400, now);
+    oscillator.frequency.exponentialRampToValueAtTime(800, now + 0.8);
+    
+    gainNode.gain.setValueAtTime(this.volume * 0.8, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+    
+    oscillator.start(now);
+    oscillator.stop(now + 0.8);
   }
   
-  .timeline-container {
-    padding-left: var(--spacing-sm);
+  playRustle() {
+    if (!this.enabled || !this.audioContext) return;
+    
+    const now = this.audioContext.currentTime;
+    const bufferSize = this.audioContext.sampleRate * 0.3;
+    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+    }
+    
+    const source = this.audioContext.createBufferSource();
+    const gainNode = this.audioContext.createGain();
+    const filter = this.audioContext.createBiquadFilter();
+    
+    source.buffer = buffer;
+    source.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = 2000;
+    gainNode.gain.value = this.volume * 0.5;
+    
+    source.start(now);
   }
   
-  .timeline-item {
-    padding-left: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .timeline-content {
-    padding: var(--spacing-sm);
-  }
-  
-  .heart-pulse {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .heart-pulse::before,
-  .heart-pulse::after {
-    width: 45px;
-    height: 72px;
-  }
-  
-  .heart-pulse::before {
-    left: 45px;
-  }
-  
-  /* Envelope adjustments for mobile */
-  .letter-paper {
-    padding: var(--spacing-xs) var(--spacing-xs);
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-    line-height: 1.5;
-  }
-  
-  .closing {
-    font-size: 0.9em;
-    padding-top: 0.25rem;
-  }
-  
-  /* Add more spacing on mobile */
-  .panel {
-    padding: var(--spacing-lg) var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  /* Ending message responsive */
-  .final-message-line {
-    font-size: clamp(2rem, 6vw, 4rem) !important;
+  playWhoosh() {
+    if (!this.enabled || !this.audioContext) return;
+    
+    const now = this.audioContext.currentTime;
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    const filter = this.audioContext.createBiquadFilter();
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(800, now);
+    oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.5);
+    
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2000, now);
+    filter.frequency.exponentialRampToValueAtTime(500, now + 0.5);
+    
+    gainNode.gain.setValueAtTime(this.volume * 0.6, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+    
+    oscillator.start(now);
+    oscillator.stop(now + 0.5);
   }
 }
 
-@media (max-width: 480px) {
-  .glow-btn {
-    padding: 1rem 2rem;
-    font-size: 1rem;
+// ═══════════════════════════════════════════════════════════
+// SHOOTING STARS
+// ═══════════════════════════════════════════════════════════
+
+class ShootingStars {
+  constructor() {
+    this.canvas = document.getElementById('shooting-stars-canvas');
+    if (!this.canvas) return;
+    
+    this.ctx = this.canvas.getContext('2d');
+    this.shootingStars = [];
+    this.animationId = null;
+    
+    this.resize();
+    this.setupEventListeners();
+    this.startCreatingStars();
+    this.animate();
   }
   
-  #rose-canvas {
-    max-width: 320px;
-    height: 320px;
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
   }
   
-  .hidden-message {
-    font-size: 1.35rem;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ACCESSIBILITY & PERFORMANCE
-   ═══════════════════════════════════════════════════════════ */
-
-/* Reduced motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Focus styles for keyboard navigation */
-button:focus-visible,
-#envelope:focus-visible {
-  outline: 3px solid var(--stardust);
-  outline-offset: 5px;
-  border-radius: 4px;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --moonlight: #ffffff;
-    --night-sky: #000000;
+  setupEventListeners() {
+    window.addEventListener('resize', () => {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.resize(), 250);
+    });
   }
   
-  .timeline-container::before {
-    width: 3px;
-  }
-}
-
-/* Dark mode is default, but we can add light mode if needed */
-@media (prefers-color-scheme: light) {
-  /* Optional: add light theme variables here if desired */
-}
-
-/* Print styles */
-@media print {
-  #star-canvas,
-  #firefly-canvas,
-  .glow-btn,
-  .scroll-indicator {
-    display: none;
+  startCreatingStars() {
+    this.createShootingStar();
+    this.starInterval = setInterval(() => {
+      this.createShootingStar();
+    }, CONFIG.shootingStars.frequency);
   }
   
-  body {
-    background: white;
-    color: black;
+  createShootingStar() {
+    const startX = Math.random() * this.canvas.width;
+    const startY = Math.random() * (this.canvas.height * 0.5);
+    const angle = Math.random() * Math.PI / 4 + Math.PI / 6; // 30-75 degrees
+    
+    this.shootingStars.push({
+      x: startX,
+      y: startY,
+      vx: Math.cos(angle) * CONFIG.shootingStars.speed,
+      vy: Math.sin(angle) * CONFIG.shootingStars.speed,
+      trail: [],
+      life: 1,
+      size: 2 + Math.random() * 2
+    });
+    
+    if (state.instances.soundEffects) {
+      state.instances.soundEffects.playWhoosh();
+    }
   }
+  
+  animate() {
+    if (!state.isTabVisible) {
+      this.animationId = requestAnimationFrame(() => this.animate());
+      return;
+    }
+    
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    this.shootingStars.forEach((star, index) => {
+      // Update position
+      star.x += star.vx;
+      star.y += star.vy;
+      
+      // Add to trail
+      star.trail.push({ x: star.x, y: star.y, alpha: star.life });
+      if (star.trail.length > CONFIG.shootingStars.trailLength) {
+        star.trail.shift();
+      }
+      
+      // Fade out
+      star.life -= 0.01;
+      
+      // Draw trail
+      star.trail.forEach((point, i) => {
+        const alpha = (i / star.trail.length) * point.alpha;
+        const size = star.size * (i / star.trail.length);
+        
+        this.ctx.beginPath();
+        this.ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+        this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        this.ctx.fill();
+        
+        // Sparkles
+        if (i % 5 === 0) {
+          this.ctx.beginPath();
+          this.ctx.arc(point.x + (Math.random() - 0.5) * 10, point.y + (Math.random() - 0.5) * 10, 1, 0, Math.PI * 2);
+          this.ctx.fillStyle = `rgba(212, 165, 255, ${alpha * 0.5})`;
+          this.ctx.fill();
+        }
+      });
+      
+      // Remove dead stars
+      if (star.life <= 0 || star.x > this.canvas.width || star.y > this.canvas.height) {
+        this.shootingStars.splice(index, 1);
+      }
+    });
+    
+    this.animationId = requestAnimationFrame(() => this.animate());
+  }
+  
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    if (this.starInterval) {
+      clearInterval(this.starInterval);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// PARTICLE HEARTS
+// ═══════════════════════════════════════════════════════════
+
+class ParticleHearts {
+  constructor() {
+    this.canvas = document.getElementById('particle-hearts-canvas');
+    if (!this.canvas) return;
+    
+    this.ctx = this.canvas.getContext('2d');
+    this.hearts = [];
+    this.animationId = null;
+    
+    this.resize();
+    this.setupEventListeners();
+    this.animate();
+  }
+  
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
+  
+  setupEventListeners() {
+    window.addEventListener('resize', () => {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.resize(), 250);
+    });
+    
+    this.canvas.addEventListener('click', (e) => this.createHeartBurst(e.clientX, e.clientY));
+    this.canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      this.createHeartBurst(touch.clientX, touch.clientY);
+    });
+  }
+  
+  createHeartBurst(x, y) {
+    const colors = CONFIG.particleHearts.colors;
+    
+    for (let i = 0; i < CONFIG.particleHearts.burstCount; i++) {
+      const angle = (i / CONFIG.particleHearts.burstCount) * Math.PI * 2;
+      const speed = 2 + Math.random() * 3;
+      
+      this.hearts.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1, // Upward bias
+        size: 15 + Math.random() * 15,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.1,
+        alpha: 1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 1
+      });
+    }
+  }
+  
+  drawHeart(x, y, size, rotation, alpha, color) {
+    this.ctx.save();
+    this.ctx.translate(x, y);
+    this.ctx.rotate(rotation);
+    this.ctx.globalAlpha = alpha;
+    
+    this.ctx.fillStyle = color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, size * 0.3);
+    this.ctx.bezierCurveTo(-size * 0.5, -size * 0.3, -size * 0.8, size * 0.1, 0, size * 0.8);
+    this.ctx.bezierCurveTo(size * 0.8, size * 0.1, size * 0.5, -size * 0.3, 0, size * 0.3);
+    this.ctx.fill();
+    
+    // Glow
+    this.ctx.shadowBlur = 15;
+    this.ctx.shadowColor = color;
+    this.ctx.fill();
+    
+    this.ctx.restore();
+  }
+  
+  animate() {
+    if (!state.isTabVisible) {
+      this.animationId = requestAnimationFrame(() => this.animate());
+      return;
+    }
+    
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    this.hearts.forEach((heart, index) => {
+      // Physics
+      heart.x += heart.vx;
+      heart.y += heart.vy;
+      heart.vy -= 0.05; // Gravity (upward)
+      heart.vx *= 0.98; // Air resistance
+      heart.rotation += heart.rotationSpeed;
+      heart.life -= 0.01;
+      heart.alpha = heart.life;
+      
+      // Draw
+      this.drawHeart(heart.x, heart.y, heart.size, heart.rotation, heart.alpha, heart.color);
+      
+      // Remove dead hearts
+      if (heart.life <= 0 || heart.y < -100) {
+        this.hearts.splice(index, 1);
+      }
+    });
+    
+    this.animationId = requestAnimationFrame(() => this.animate());
+  }
+  
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOVE NOTES JAR
+// ═══════════════════════════════════════════════════════════
+
+class LoveNotesJar {
+  constructor() {
+    this.jar = document.getElementById('love-jar');
+    this.noteElement = document.getElementById('love-note');
+    this.noteText = document.getElementById('note-text');
+    this.anotherBtn = document.getElementById('another-note');
+    
+    if (!this.jar || !this.noteElement) return;
+    
+    this.notes = this.generateLoveNotes();
+    this.usedNotes = [];
+    
+    this.setupEventListeners();
+  }
+  
+  generateLoveNotes() {
+    return [
+      "Your smile is my favorite notification.",
+      "I fall for you more every single day.",
+      "You make ordinary moments extraordinary.",
+      "My heart smiles when I think of you.",
+      "You're the reason I believe in magic.",
+      "Every love song reminds me of you.",
+      "You're my favorite person to think about.",
+      "With you, home is wherever we are together.",
+      "You make my heart skip and race at the same time.",
+      "I could never get tired of hearing your voice.",
+      "You're the plot twist I never saw coming.",
+      "My favorite place is inside your hug.",
+      "You turn my darkness into light.",
+      "I love the way you make me feel alive.",
+      "You're the missing piece I didn't know I needed.",
+      "Every moment with you is a treasure.",
+      "You make me want to be a better person.",
+      "Your laugh is my favorite sound in the universe.",
+      "I'm so grateful you exist.",
+      "You're my happy place.",
+      "Life is better because you're in it.",
+      "You make even Mondays feel like Fridays.",
+      "I love the way you see the world.",
+      "You're the best decision I never knew I was making.",
+      "Your happiness is my favorite goal.",
+      "I love you more than words can express.",
+      "You're my favorite adventure.",
+      "Thank you for being exactly who you are.",
+      "You make my heart full.",
+      "I'm the luckiest person to call you mine.",
+      "You're my sunshine on cloudy days.",
+      "Every day with you is a gift.",
+      "You're the dream I didn't dare to dream.",
+      "My love for you grows with every heartbeat.",
+      "You're my today and all of my tomorrows.",
+      "I love the way you love me.",
+      "You're the reason I wake up smiling.",
+      "With you, forever isn't long enough.",
+      "You're my favorite kind of perfect.",
+      "I choose you. Every single day.",
+      "You make my heart feel like it's dancing.",
+      "You're the answer to prayers I didn't know I had.",
+      "I love every little thing about you.",
+      "You're my safe place in this chaotic world.",
+      "Thank you for loving me at my worst.",
+      "You're the most beautiful soul I've ever known.",
+      "I love the way your hand fits in mine.",
+      "You're my favorite reason to lose sleep.",
+      "Every goodbye is hard because I miss you instantly.",
+      "You're the love I want to grow old with."
+    ];
+  }
+  
+  setupEventListeners() {
+    this.jar.addEventListener('click', () => this.pullNote());
+    this.anotherBtn.addEventListener('click', () => this.pullNote());
+  }
+  
+  pullNote() {
+    // Get random note
+    if (this.usedNotes.length === this.notes.length) {
+      this.usedNotes = []; // Reset if all used
+    }
+    
+    let availableNotes = this.notes.filter(note => !this.usedNotes.includes(note));
+    let randomNote = availableNotes[Math.floor(Math.random() * availableNotes.length)];
+    this.usedNotes.push(randomNote);
+    
+    // Animate jar
+    this.jar.style.transform = 'translateY(-20px) rotateZ(-5deg)';
+    setTimeout(() => {
+      this.jar.style.transform = '';
+    }, 300);
+    
+    // Show note
+    this.noteText.textContent = randomNote;
+    this.noteElement.classList.remove('hidden');
+    
+    setTimeout(() => {
+      this.noteElement.classList.add('visible');
+    }, 100);
+    
+    // Sound effect
+    if (state.instances.soundEffects) {
+      state.instances.soundEffects.playRustle();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// REASONS I LOVE YOU
+// ═══════════════════════════════════════════════════════════
+
+class ReasonsILoveYou {
+  constructor() {
+    this.container = document.getElementById('reasons-list');
+    if (!this.container) return;
+    
+    this.reasons = this.generateReasons();
+    this.createReasonCards();
+    this.setupScrollObserver();
+  }
+  
+  generateReasons() {
+    return [
+      "Your smile lights up my entire world",
+      "The way you laugh makes everything better",
+      "Your kindness touches everyone you meet",
+      "You make me want to be the best version of myself",
+      "Your intelligence amazes me every day",
+      "The way you care about others is beautiful",
+      "Your strength inspires me",
+      "You make even ordinary moments magical",
+      "Your honesty and authenticity",
+      "The way you see beauty in everything",
+      "Your passion for life is contagious",
+      "You understand me like no one else",
+      "Your hugs feel like home",
+      "The sparkle in your eyes when you're excited",
+      "Your patience with me and others",
+      "The way you make me feel safe",
+      "Your creativity and unique perspective",
+      "You challenge me to grow",
+      "Your love for learning new things",
+      "The way you dance like nobody's watching",
+      "Your compassion for all living things",
+      "You make me laugh until my stomach hurts",
+      "Your determination when facing challenges",
+      "The little things you do just to make me smile",
+      "Your ability to find joy in simple moments",
+      "You listen with your whole heart",
+      "Your courage to be vulnerable",
+      "The way you support my dreams",
+      "Your beautiful mind and soul",
+      "You make me believe in magic again",
+      "Your touch makes everything okay",
+      "The way you remember small details about me",
+      "Your optimism even on tough days",
+      "You make me feel cherished",
+      "Your spontaneity and sense of adventure",
+      "The peace I feel when I'm with you",
+      "Your incredible heart",
+      "You accept me completely",
+      "The way you make ordinary days extraordinary",
+      "Your wisdom beyond your years",
+      "You bring out the best in me",
+      "Your gentle nature",
+      "The way you love with all your heart",
+      "Your quirks that make you uniquely you",
+      "You're my favorite person to be with",
+      "Your eyes tell stories words never could",
+      "The way you make me feel like I'm home",
+      "Your beautiful soul shines through everything you do",
+      "You're my best friend and my love",
+      "Simply because you're you, and that's everything"
+    ];
+  }
+  
+  createReasonCards() {
+    this.reasons.forEach((reason, index) => {
+      const card = document.createElement('div');
+      card.className = 'reason-card';
+      card.innerHTML = `
+        <div class="reason-number">${index + 1}</div>
+        <p class="reason-text">${reason}</p>
+      `;
+      this.container.appendChild(card);
+    });
+  }
+  
+  setupScrollObserver() {
+    const cards = document.querySelectorAll('.reason-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+            if (state.instances.soundEffects) {
+              state.instances.soundEffects.playChime();
+            }
+          }, 100);
+        }
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '0px 0px -100px 0px'
+    });
+    
+    cards.forEach(card => observer.observe(card));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 3D ROSE (Basic Three.js Implementation)
+// ═══════════════════════════════════════════════════════════
+
+class Rose3D {
+  constructor() {
+    this.container = document.getElementById('rose-3d-container');
+    if (!this.container || typeof THREE === 'undefined') {
+      console.log('Three.js not loaded or container not found');
+      return;
+    }
+    
+    this.fallingPetals = [];
+    this.resetBtn = document.getElementById('reset-petals');
+    
+    this.init();
+    this.createRose();
+    this.setupEventListeners();
+    this.animate();
+  }
+  
+  init() {
+    // Scene
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x0a0e27);
+    
+    // Camera
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      this.container.clientWidth / this.container.clientHeight,
+      0.1,
+      1000
+    );
+    this.camera.position.z = 5;
+    
+    // Renderer
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.container.appendChild(this.renderer.domElement);
+    
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(ambientLight);
+    
+    const pointLight = new THREE.PointLight(0xff6b9d, 1, 100);
+    pointLight.position.set(5, 5, 5);
+    this.scene.add(pointLight);
+    
+    const pointLight2 = new THREE.PointLight(0xd4a5ff, 0.5, 100);
+    pointLight2.position.set(-5, -5, 5);
+    this.scene.add(pointLight2);
+  }
+  
+  createRose() {
+    this.rose = new THREE.Group();
+    
+    // Stem
+    const stemGeometry = new THREE.CylinderGeometry(0.05, 0.08, 3, 8);
+    const stemMaterial = new THREE.MeshPhongMaterial({ color: 0x2d5037 });
+    const stem = new THREE.Mesh(stemGeometry, stemMaterial);
+    stem.position.y = -1.5;
+    this.rose.add(stem);
+    
+    // Petals
+    this.petals = [];
+    const petalCount = 12;
+    const petalGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+    
+    for (let i = 0; i < petalCount; i++) {
+      const petalMaterial = new THREE.MeshPhongMaterial({
+        color: 0xff6b9d,
+        shininess: 30,
+        transparent: true,
+        opacity: 0.9
+      });
+      
+      const petal = new THREE.Mesh(petalGeometry, petalMaterial);
+      const angle = (i / petalCount) * Math.PI * 2;
+      const layer = Math.floor(i / 4);
+      const radius = 0.5 + layer * 0.3;
+      
+      petal.position.x = Math.cos(angle) * radius;
+      petal.position.z = Math.sin(angle) * radius;
+      petal.position.y = layer * 0.2;
+      petal.scale.set(0.8, 0.4, 0.3);
+      petal.rotation.y = angle;
+      
+      this.rose.add(petal);
+      this.petals.push(petal);
+    }
+    
+    // Center
+    const centerGeometry = new THREE.SphereGeometry(0.3, 16, 16);
+    const centerMaterial = new THREE.MeshPhongMaterial({ color: 0xffd700, emissive: 0xffaa00 });
+    const center = new THREE.Mesh(centerGeometry, centerMaterial);
+    center.position.y = 0.3;
+    this.rose.add(center);
+    
+    this.scene.add(this.rose);
+  }
+  
+  setupEventListeners() {
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    
+    this.renderer.domElement.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+    
+    this.renderer.domElement.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+        
+        this.rose.rotation.y += deltaX * 0.01;
+        this.rose.rotation.x += deltaY * 0.01;
+        
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      }
+    });
+    
+    this.renderer.domElement.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+    
+    // Touch support
+    this.renderer.domElement.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    });
+    
+    this.renderer.domElement.addEventListener('touchmove', (e) => {
+      if (isDragging) {
+        const deltaX = e.touches[0].clientX - previousMousePosition.x;
+        const deltaY = e.touches[0].clientY - previousMousePosition.y;
+        
+        this.rose.rotation.y += deltaX * 0.01;
+        this.rose.rotation.x += deltaY * 0.01;
+        
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    });
+    
+    this.renderer.domElement.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+    
+    // Reset button
+    if (this.resetBtn) {
+      this.resetBtn.addEventListener('click', () => this.resetPetals());
+    }
+    
+    // Microphone blow detection (optional - requires permission)
+    this.setupMicrophoneDetection();
+    
+    // Window resize
+    window.addEventListener('resize', () => this.onWindowResize());
+  }
+  
+  setupMicrophoneDetection() {
+    // This is a simplified version - full implementation would need user permission
+    // For now, we'll make petals fall randomly
+    setInterval(() => {
+      if (Math.random() < 0.05 && this.petals.length > 0) {
+        this.dropPetal();
+      }
+    }, 1000);
+  }
+  
+  dropPetal() {
+    if (this.petals.length === 0) return;
+    
+    const randomIndex = Math.floor(Math.random() * this.petals.length);
+    const petal = this.petals[randomIndex];
+    
+    this.petals.splice(randomIndex, 1);
+    this.fallingPetals.push({
+      mesh: petal,
+      velocity: { x: (Math.random() - 0.5) * 0.02, y: -0.02, z: (Math.random() - 0.5) * 0.02 },
+      rotation: { x: Math.random() * 0.1, y: Math.random() * 0.1, z: Math.random() * 0.1 }
+    });
+  }
+  
+  resetPetals() {
+    this.fallingPetals.forEach(fp => {
+      this.rose.add(fp.mesh);
+      // Reset position (simplified)
+    });
+    this.fallingPetals = [];
+  }
+  
+  onWindowResize() {
+    this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+  }
+  
+  animate() {
+    requestAnimationFrame(() => this.animate());
+    
+    // Gentle auto-rotation
+    this.rose.rotation.y += 0.002;
+    
+    // Update falling petals
+    this.fallingPetals.forEach((fp, index) => {
+      fp.mesh.position.x += fp.velocity.x;
+      fp.mesh.position.y += fp.velocity.y;
+      fp.mesh.position.z += fp.velocity.z;
+      
+      fp.mesh.rotation.x += fp.rotation.x;
+      fp.mesh.rotation.y += fp.rotation.y;
+      fp.mesh.rotation.z += fp.rotation.z;
+      
+      // Remove if fallen too far
+      if (fp.mesh.position.y < -5) {
+        this.scene.remove(fp.mesh);
+        this.fallingPetals.splice(index, 1);
+      }
+    });
+    
+    this.renderer.render(this.scene, this.camera);
+  }
+  
+  destroy() {
+    if (this.renderer) {
+      this.renderer.dispose();
+      this.container.removeChild(this.renderer.domElement);
+    }
+  }
+}
+
+// Export for use in main script
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    SoundEffects,
+    ShootingStars,
+    ParticleHearts,
+    LoveNotesJar,
+    ReasonsILoveYou,
+    Rose3D
+  };
 }
