@@ -67,9 +67,6 @@
         <div class="opening-content">
           <p id="typed-line" class="typed" aria-live="polite"></p>
         </div>
-        <button class="glow-btn scroll-indicator scroll-btn" data-target="rose-section" aria-label="Continue to rose section">
-          Continue ↓
-        </button>
       </section>
       
       <!-- Rose Section: Interactive Blooming Rose -->
@@ -82,9 +79,6 @@
         <p id="rose-message" class="hidden-message" aria-live="polite">
           Himani, you're the most beautiful part of my story. 🌹
         </p>
-        <button class="glow-btn scroll-btn" data-target="timeline" aria-label="Continue to timeline">
-          Continue ↓
-        </button>
       </section>
       
       <!-- Timeline Section: Our Story -->
@@ -123,37 +117,6 @@
             </div>
           </article>
         </div>
-        <button class="glow-btn scroll-btn" data-target="love-notes-section" aria-label="Continue to love notes">
-          Continue ↓
-        </button>
-      </section>
-      
-      <!-- Love Notes Jar Section -->
-      <section id="love-notes-section" class="panel full-screen">
-        <div class="love-notes-container">
-          <h2>Love Notes for Himani</h2>
-          <p class="section-subtitle">Click the jar to reveal a sweet message 💌</p>
-          <div id="love-jar" class="love-jar">
-            <div class="jar-body">
-              <div class="jar-lid"></div>
-              <div class="jar-label">Pull a note</div>
-              <div class="jar-hearts">
-                <span class="jar-heart">💕</span>
-                <span class="jar-heart">💖</span>
-                <span class="jar-heart">💝</span>
-              </div>
-            </div>
-          </div>
-          <div id="love-note" class="love-note hidden">
-            <div class="note-paper">
-              <p id="note-text"></p>
-              <button id="another-note" class="glow-btn secondary-btn">Another Note</button>
-            </div>
-          </div>
-        </div>
-        <button class="glow-btn scroll-btn" data-target="letter-section" aria-label="Continue to letter">
-          Continue ↓
-        </button>
       </section>
       
       <!-- Letter Section: Secret Message -->
@@ -171,16 +134,14 @@
           </div>
         </button>
         <p class="hint">Click the envelope</p>
-        <button class="glow-btn scroll-btn" data-target="ending" aria-label="Continue to ending">
-          Continue ↓
-        </button>
       </section>
       
       <!-- Ending Section: Fireflies & Final Message -->
       <section id="ending" class="panel full-screen">
         <canvas id="firefly-canvas" aria-hidden="true"></canvas>
         <div class="ending-text">
-          <h2>Every version of my future…<br />has you in it, Himani. 💫</h2>
+          <h2 id="final-message-line1" class="final-message-line">I love you</h2>
+          <h2 id="final-message-line2" class="final-message-line">my girl 💕</h2>
           <div class="heart-pulse" aria-label="Glowing heart"></div>
           <button id="replay-btn" class="glow-btn secondary-btn" aria-label="Experience again">
             ↻ Experience Again
