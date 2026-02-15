@@ -53,29 +53,41 @@ function init() {
   const music = document.getElementById('music');
   const audioBtn = document.getElementById('audio-btn');
   
-  audioBtn.addEventListener('click', () => {
-    if (state.audioPlaying) {
-      music.pause();
-      audioBtn.classList.add('paused');
-      state.audioPlaying = false;
-    } else {
-      music.play().catch(() => {});
-      audioBtn.classList.remove('paused');
-      state.audioPlaying = true;
-    }
-  });
+  if (music && audioBtn) {
+    music.volume = 0.3; // Set to 30% volume
+    
+    audioBtn.addEventListener('click', () => {
+      if (state.audioPlaying) {
+        fadeOut(music, () => {
+          music.pause();
+          audioBtn.classList.add('paused');
+          state.audioPlaying = false;
+        });
+      } else {
+        music.play().catch(() => {});
+        fadeIn(music, 0.3);
+        audioBtn.classList.remove('paused');
+        state.audioPlaying = true;
+      }
+    });
+  }
   
   // Intro
   const intro = document.getElementById('intro');
   const startBtn = document.getElementById('start-btn');
   
-  startBtn.addEventListener('click', () => {
-    intro.classList.remove('active');
-    music.play().catch(() => {});
-    state.audioPlaying = true;
-    audioBtn.classList.remove('paused');
-    setTimeout(startExperience, 800);
-  });
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      intro.classList.remove('active');
+      if (music) {
+        music.play().catch(() => {});
+        fadeIn(music, 0.3);
+        state.audioPlaying = true;
+        audioBtn.classList.remove('paused');
+      }
+      setTimeout(startExperience, 800);
+    });
+  }
   
   // Initialize features
   setTimeout(() => {
@@ -90,10 +102,39 @@ function init() {
   }, 300);
   
   // Replay
-  document.getElementById('replay').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => location.reload(), 1000);
-  });
+  const replayBtn = document.getElementById('replay');
+  if (replayBtn) {
+    replayBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => location.reload(), 1000);
+    });
+  }
+}
+
+// Fade in audio
+function fadeIn(audio, targetVolume) {
+  audio.volume = 0;
+  const fadeInterval = setInterval(() => {
+    if (audio.volume < targetVolume - 0.02) {
+      audio.volume = Math.min(audio.volume + 0.02, targetVolume);
+    } else {
+      audio.volume = targetVolume;
+      clearInterval(fadeInterval);
+    }
+  }, 100);
+}
+
+// Fade out audio
+function fadeOut(audio, callback) {
+  const fadeInterval = setInterval(() => {
+    if (audio.volume > 0.02) {
+      audio.volume = Math.max(audio.volume - 0.02, 0);
+    } else {
+      audio.volume = 0;
+      clearInterval(fadeInterval);
+      if (callback) callback();
+    }
+  }, 100);
 }
 
 function adjustForPerformance() {
