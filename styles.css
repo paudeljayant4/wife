@@ -244,7 +244,124 @@ h1 {
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-     BUTTONS
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+  filter: drop-shadow(0 0 30px rgba(212, 165, 255, 0.4));
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--rose-gold);
+  text-shadow: 0 0 30px rgba(244, 194, 194, 0.5), 0 0 60px rgba(244, 194, 194, 0.3);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--stardust);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: var(--glow-soft);
+}
+
+p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  color: var(--moonlight);
+  opacity: 0.92;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTRO OVERLAY
+   ═══════════════════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, var(--deep-space), var(--night-sky));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay-card {
+  text-align: center;
+  padding: var(--spacing-lg) var(--spacing-lg);
+  background: rgba(26, 29, 53, 0.85);
+  border: 2px solid rgba(212, 165, 255, 0.3);
+  border-radius: 24px;
+  backdrop-filter: blur(30px);
+  box-shadow: 
+    var(--shadow-depth),
+    0 0 100px rgba(107, 76, 154, 0.3) inset,
+    0 0 200px rgba(107, 76, 154, 0.1);
+  animation: floatIn 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 500px;
+  margin: var(--spacing-md);
+}
+
+.heart-icon {
+  font-size: 5rem;
+  margin-bottom: var(--spacing-md);
+  animation: heartbeat 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.6));
+}
+
+.overlay-card h1 {
+  margin-bottom: var(--spacing-md);
+}
+
+.overlay-card p {
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-md);
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  10% { 
+    transform: scale(1.15); 
+  }
+  20% { 
+    transform: scale(1); 
+  }
+  30% { 
+    transform: scale(1.1); 
+  }
+  40% { 
+    transform: scale(1); 
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
    ═══════════════════════════════════════════════════════════ */
 
 .glow-btn {
