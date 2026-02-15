@@ -1,170 +1,112 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A romantic interactive experience for Himani - our universe together" />
-    <meta name="theme-color" content="#0a0e27" />
-    <title>Our Universe - For Himani 💫</title>
-    
-    <!-- Preconnect to external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-    
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    
-    <!-- Favicon (optional - add your own) -->
-    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg" /> -->
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- Animated Star Background -->
-    <canvas id="star-canvas" aria-hidden="true"></canvas>
-    
-    <!-- Shooting Stars Canvas -->
-    <canvas id="shooting-stars-canvas" aria-hidden="true"></canvas>
-    
-    <!-- Background Music -->
-    <!-- IMPORTANT: Replace with your own romantic piano MP3 for best experience -->
-    <!-- Suggested tracks: "River Flows in You", "Clair de Lune", "Comptine d'un autre été" -->
-    <!-- Or use royalty-free music from: https://freepd.com or https://incompetech.com -->
-    <audio id="background-music" loop preload="auto">
-      <!-- Add your own romantic piano MP3 file here -->
-      <source src="romantic-piano.mp3" type="audio/mpeg">
-      <!-- Fallback to online source (may not work due to CORS) -->
-      <source src="https://www.bensound.com/bensound-music/bensound-betterdays.mp3" type="audio/mpeg">
-    </audio>
-    
-    <!-- Audio Control Button -->
-    <button id="audio-control" class="audio-control" aria-label="Toggle background music">
-      <span class="audio-icon playing">🔊</span>
-      <span class="audio-icon paused">🔇</span>
-    </button>
-    
-    <!-- Intro Overlay -->
-    <div id="intro-overlay" class="overlay active" role="dialog" aria-labelledby="intro-title">
-      <div class="overlay-card">
-        <div class="heart-icon" aria-hidden="true">💖</div>
-        <h1 id="intro-title">Our Universe</h1>
-        <p>Put on your headphones, then begin.</p>
-        <button id="begin-experience" class="glow-btn" aria-label="Begin the experience">
-          Enter
-        </button>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A romantic experience for Himani">
+  <title>Our Universe - For Himani 💫</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Background -->
+  <canvas id="star-canvas"></canvas>
+  <canvas id="shooting-stars"></canvas>
+  
+  <!-- Music -->
+  <audio id="music" loop>
+    <source src="romantic-piano.mp3" type="audio/mpeg">
+  </audio>
+  
+  <button id="audio-btn" class="audio-btn">
+    <span class="icon playing">🔊</span>
+    <span class="icon paused">🔇</span>
+  </button>
+  
+  <!-- Intro -->
+  <div id="intro" class="overlay active">
+    <div class="card">
+      <div class="heart">💖</div>
+      <h1>Our Universe</h1>
+      <p>Put on your headphones, then begin.</p>
+      <button id="start-btn" class="btn">Enter</button>
     </div>
+  </div>
+  
+  <!-- Sections -->
+  <main>
+    <section id="opening" class="section full">
+      <p id="typed-text" class="typed"></p>
+    </section>
     
-    <!-- Main Content -->
-    <main>
-      <!-- Opening Section: Constellation Name -->
-      <section id="opening" class="panel full-screen">
-        <div class="opening-content">
-          <p id="typed-line" class="typed" aria-live="polite"></p>
-        </div>
-      </section>
-      
-      <!-- Rose Section: Interactive Blooming Rose -->
-      <section id="rose-section" class="panel full-screen">
-        <div class="section-header">
-          <h2>A Rose for Himani</h2>
-          <p>Touch the rose and watch it bloom.</p>
-        </div>
-        <canvas id="rose-canvas" role="img" aria-label="Interactive blooming rose"></canvas>
-        <p id="rose-message" class="hidden-message" aria-live="polite">
-          Himani, you're the most beautiful part of my story. 🌹
-        </p>
-      </section>
-      
-      <!-- Timeline Section: Our Story -->
-      <section id="timeline" class="panel">
-        <h2>Timeline of Us</h2>
-        <div class="timeline-container">
-          <article class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>The First Time I Noticed You</h3>
-              <p>The world suddenly got quiet, as if it knew this moment mattered. In that instant, I saw Himani — not just a name, but a universe waiting to be discovered.</p>
-            </div>
-          </article>
-          
-          <article class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>The First Smile</h3>
-              <p>Soft light, warm heart, and the feeling that I had just found home. Your smile became my favorite constellation in the night sky.</p>
-            </div>
-          </article>
-          
-          <article class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>The Moment I Knew</h3>
-              <p>Not loud, not dramatic — just certain. My future looked brighter with you in it, Himani. Like stars aligning perfectly across the cosmos.</p>
-            </div>
-          </article>
-          
-          <article class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Every Day Since</h3>
-              <p>Each moment with you is a constellation forming in the sky of my life. Our story continues to be written among the stars.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-      
-      <!-- Letter Section: Secret Message -->
-      <section id="letter-section" class="panel full-screen">
-        <button id="envelope" aria-label="Click to open secret letter" aria-expanded="false">
-          <span class="envelope-flap" aria-hidden="true"></span>
-          <div class="letter-paper">
-            <p class="letter-text">
-              Dear Himani,<br/><br/>
-              Thank you for being my peace, my laughter, and my favorite place to return to. 
-              With you, even ordinary days feel magical.<br/><br/>
-              You are the constellation I've been searching for.
-            </p>
-            <p class="closing">Forever yours ✨</p>
+    <section id="rose" class="section full">
+      <h2>A Rose for Himani</h2>
+      <p class="subtitle">Touch the rose and watch it bloom</p>
+      <canvas id="rose-canvas"></canvas>
+      <p id="rose-msg" class="msg hidden">Himani, you're the most beautiful part of my story 🌹</p>
+    </section>
+    
+    <section id="timeline" class="section">
+      <h2>Timeline of Us</h2>
+      <div class="timeline">
+        <div class="item">
+          <div class="marker"></div>
+          <div class="content">
+            <h3>The First Time I Noticed You</h3>
+            <p>The world suddenly got quiet, as if it knew this moment mattered. In that instant, I saw Himani — not just a name, but a universe waiting to be discovered.</p>
           </div>
-        </button>
-        <p class="hint">Click the envelope</p>
-      </section>
-      
-      <!-- Ending Section: Fireflies & Final Message -->
-      <section id="ending" class="panel full-screen">
-        <canvas id="firefly-canvas" aria-hidden="true"></canvas>
-        <div class="ending-text">
-          <h2 id="final-message-line1" class="final-message-line">I love you</h2>
-          <h2 id="final-message-line2" class="final-message-line">my girl 💕</h2>
-          <div class="heart-pulse" aria-label="Glowing heart"></div>
-          <button id="replay-btn" class="glow-btn secondary-btn" aria-label="Experience again">
-            ↻ Experience Again
-          </button>
         </div>
-      </section>
-    </main>
+        <div class="item">
+          <div class="marker"></div>
+          <div class="content">
+            <h3>The First Smile</h3>
+            <p>Soft light, warm heart, and the feeling that I had just found home. Your smile became my favorite constellation in the night sky.</p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="marker"></div>
+          <div class="content">
+            <h3>The Moment I Knew</h3>
+            <p>Not loud, not dramatic — just certain. My future looked brighter with you in it, Himani. Like stars aligning perfectly across the cosmos.</p>
+          </div>
+        </div>
+        <div class="item">
+          <div class="marker"></div>
+          <div class="content">
+            <h3>Every Day Since</h3>
+            <p>Each moment with you is a constellation forming in the sky of my life. Our story continues to be written among the stars.</p>
+          </div>
+        </div>
+      </div>
+    </section>
     
-    <!-- Loading Screen (optional) -->
-    <div id="loading-screen" class="loading-screen">
-      <div class="spinner"></div>
-      <p>Loading your universe...</p>
-    </div>
+    <section id="letter" class="section full">
+      <button id="envelope">
+        <span class="flap"></span>
+        <div class="paper">
+          <p>Dear Himani,<br><br>Thank you for being my peace, my laughter, and my favorite place to return to. With you, even ordinary days feel magical.<br><br>You are the constellation I've been searching for.</p>
+          <p class="sign">Forever yours ✨</p>
+        </div>
+      </button>
+      <p class="hint">Click the envelope</p>
+    </section>
     
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    
-    <!-- Addon Features -->
-    <script src="script-addons.js"></script>
-    
-    <!-- Main Script -->
-    <script src="script.js"></script>
-  </body>
+    <section id="ending" class="section full">
+      <canvas id="firefly-canvas"></canvas>
+      <div class="finale">
+        <h2 id="msg1" class="finale-line">I love you</h2>
+        <h2 id="msg2" class="finale-line">my girl 💕</h2>
+        <div class="heart-pulse"></div>
+        <button id="replay" class="btn secondary">↻ Experience Again</button>
+      </div>
+    </section>
+  </main>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
 </html>
