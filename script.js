@@ -34,8 +34,22 @@ const CONFIG = {
   },
   constellation: {
     name: "HIMANI",
-    starSize: 4, // Larger stars for better visibility
+    starSize: 4,
     connectLines: true
+  },
+  shootingStars: {
+    frequency: 3000, // Every 3 seconds
+    speed: 15,
+    trailLength: 100
+  },
+  particleHearts: {
+    burstCount: 12,
+    floatSpeed: 2,
+    colors: ['#ff6b9d', '#ff8fb5', '#ffc1d9', '#f4c2c2']
+  },
+  soundEffects: {
+    enabled: true,
+    volume: 0.3
   }
 };
 
@@ -667,18 +681,27 @@ function typeText() {
 // ═══════════════════════════════════════════════════════════
 
 function initScrollBehavior() {
-  const scrollBtn = document.getElementById('scroll-next');
+  const scrollButtons = document.querySelectorAll('.scroll-btn, .scroll-indicator');
   const replayBtn = document.getElementById('replay-btn');
   
-  if (scrollBtn) {
-    scrollBtn.addEventListener('click', () => {
-      const roseSection = document.getElementById('rose-section');
-      if (roseSection) {
-        roseSection.scrollIntoView({ behavior: 'smooth' });
+  // Handle all scroll buttons
+  scrollButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Play sound effect
+        if (state.instances.soundEffects) {
+          state.instances.soundEffects.playChime();
+        }
       }
     });
-  }
+  });
   
+  // Handle replay button
   if (replayBtn) {
     replayBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1304,9 +1327,45 @@ function init() {
   // Initialize features after a short delay
   setTimeout(() => {
     try {
+      state.instances.soundEffects = new SoundEffects();
+    } catch (error) {
+      handleError(error, 'SoundEffects');
+    }
+    
+    try {
+      state.instances.shootingStars = new ShootingStars();
+    } catch (error) {
+      handleError(error, 'ShootingStars');
+    }
+    
+    try {
+      state.instances.particleHearts = new ParticleHearts();
+    } catch (error) {
+      handleError(error, 'ParticleHearts');
+    }
+    
+    try {
       state.instances.rose = new InteractiveRose();
     } catch (error) {
       handleError(error, 'InteractiveRose');
+    }
+    
+    try {
+      state.instances.loveNotesJar = new LoveNotesJar();
+    } catch (error) {
+      handleError(error, 'LoveNotesJar');
+    }
+    
+    try {
+      state.instances.reasonsILoveYou = new ReasonsILoveYou();
+    } catch (error) {
+      handleError(error, 'ReasonsILoveYou');
+    }
+    
+    try {
+      state.instances.rose3D = new Rose3D();
+    } catch (error) {
+      handleError(error, 'Rose3D');
     }
     
     try {
