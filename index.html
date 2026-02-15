@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A romantic interactive experience for Himani - our universe together" />
     <meta name="theme-color" content="#0a0e27" />
+    <meta name="color-scheme" content="dark" />
     <title>Our Universe - For Himani 💫</title>
     
     <!-- Preconnect to external resources -->
@@ -25,6 +26,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <noscript>
+      <div class="noscript-warning" role="alert">
+        This experience uses JavaScript for animations and interactions. Please enable JavaScript to view the full experience.
+      </div>
+    </noscript>
     <!-- Animated Star Background -->
     <canvas id="star-canvas" aria-hidden="true"></canvas>
     
@@ -44,7 +50,7 @@
     </audio>
     
     <!-- Audio Control Button -->
-    <button id="audio-control" class="audio-control" aria-label="Toggle background music">
+    <button id="audio-control" class="audio-control" type="button" aria-label="Toggle background music">
       <span class="audio-icon playing">🔊</span>
       <span class="audio-icon paused">🔇</span>
     </button>
@@ -55,7 +61,7 @@
         <div class="heart-icon" aria-hidden="true">💖</div>
         <h1 id="intro-title">Our Universe</h1>
         <p>Put on your headphones, then begin.</p>
-        <button id="begin-experience" class="glow-btn" aria-label="Begin the experience">
+        <button id="begin-experience" class="glow-btn" type="button" aria-label="Begin the experience">
           Enter
         </button>
       </div>
@@ -68,7 +74,7 @@
         <div class="opening-content">
           <p id="typed-line" class="typed" aria-live="polite"></p>
         </div>
-        <button class="glow-btn scroll-indicator scroll-btn" data-target="rose-section" aria-label="Continue to rose section">
+        <button class="glow-btn scroll-indicator scroll-btn" type="button" data-target="rose-section" aria-label="Continue to rose section">
           Continue ↓
         </button>
       </section>
@@ -83,7 +89,7 @@
         <p id="rose-message" class="hidden-message" aria-live="polite">
           Himani, you're the most beautiful part of my story. 🌹
         </p>
-        <button class="glow-btn scroll-btn" data-target="timeline" aria-label="Continue to timeline">
+        <button class="glow-btn scroll-btn" type="button" data-target="timeline" aria-label="Continue to timeline">
           Continue ↓
         </button>
       </section>
@@ -124,10 +130,11 @@
             </div>
           </article>
         </div>
+      </section>
       
       <!-- Letter Section: Secret Message -->
       <section id="letter-section" class="panel full-screen">
-        <button id="envelope" aria-label="Click to open secret letter" aria-expanded="false">
+        <button id="envelope" type="button" aria-label="Click to open secret letter" aria-expanded="false">
           <span class="envelope-flap" aria-hidden="true"></span>
           <div class="letter-paper">
             <p class="letter-text">
@@ -140,7 +147,7 @@
           </div>
         </button>
         <p class="hint">Click the envelope</p>
-        <button class="glow-btn scroll-btn" data-target="ending" aria-label="Continue to ending">
+        <button class="glow-btn scroll-btn" type="button" data-target="ending" aria-label="Continue to ending">
           Continue ↓
         </button>
       </section>
@@ -151,7 +158,7 @@
         <div class="ending-text">
           <h2>Every version of my future…<br />has you in it, Himani. 💫</h2>
           <div class="heart-pulse" aria-label="Glowing heart"></div>
-          <button id="replay-btn" class="glow-btn secondary-btn" aria-label="Experience again">
+          <button id="replay-btn" class="glow-btn secondary-btn" type="button" aria-label="Experience again">
             ↻ Experience Again
           </button>
         </div>
@@ -159,7 +166,7 @@
     </main>
     
     <!-- Loading Screen (optional) -->
-    <div id="loading-screen" class="loading-screen">
+    <div id="loading-screen" class="loading-screen" aria-live="polite">
       <div class="spinner"></div>
       <p>Loading your universe...</p>
     </div>
