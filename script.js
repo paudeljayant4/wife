@@ -34,7 +34,7 @@ const CONFIG = {
   },
   constellation: {
     name: "HIMANI",
-    starSize: 3,
+    starSize: 4, // Larger stars for better visibility
     connectLines: true
   }
 };
@@ -254,11 +254,15 @@ class ConstellationName {
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
     this.canvas.style.pointerEvents = 'none';
-    this.canvas.style.zIndex = '5';
+    this.canvas.style.zIndex = '10'; // Higher z-index to be above everything
     
     const openingSection = document.getElementById('opening');
     if (openingSection) {
       openingSection.appendChild(this.canvas);
+      console.log('Constellation canvas added to opening section');
+    } else {
+      console.error('Opening section not found!');
+      return;
     }
     
     this.ctx = this.canvas.getContext('2d');
@@ -268,7 +272,12 @@ class ConstellationName {
     
     this.resize();
     this.createConstellationStars();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => this.handleResize());
+  }
+  
+  handleResize() {
+    this.resize();
+    this.createConstellationStars();
   }
   
   resize() {
@@ -277,29 +286,73 @@ class ConstellationName {
   }
   
   createConstellationStars() {
-    // Letter patterns for HIMANI (simplified dot matrix style)
-    const letterH = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,2],[2,0],[2,1],[2,2],[2,3],[2,4]];
-    const letterI = [[0,0],[0,1],[0,2],[0,3],[0,4]];
-    const letterM = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,1],[4,0],[4,1],[4,2],[4,3],[4,4]];
-    const letterA = [[0,1],[0,2],[0,3],[0,4],[1,0],[1,2],[2,0],[2,1],[2,2],[2,3],[2,4]];
-    const letterN = [[0,0],[0,1],[0,2],[0,3],[0,4],[1,1],[2,2],[3,3],[4,0],[4,1],[4,2],[4,3],[4,4]];
-    const letterI2 = [[0,0],[0,1],[0,2],[0,3],[0,4]];
+    // Better letter patterns for HIMANI in 5x5 grid (clearer visibility)
+    // Format: [x, y] coordinates where each letter is mapped clearly
     
-    // H-I-M-A-N-I (6 letters total)
+    // H - Two vertical lines with horizontal connector
+    const letterH = [
+      [0,0],[0,1],[0,2],[0,3],[0,4],  // Left vertical
+      [1,2],                           // Middle connector
+      [2,0],[2,1],[2,2],[2,3],[2,4]   // Right vertical
+    ];
+    
+    // I - Simple vertical line
+    const letterI = [
+      [1,0],[1,1],[1,2],[1,3],[1,4]   // Center vertical
+    ];
+    
+    // M - Two verticals with peaks
+    const letterM = [
+      [0,0],[0,1],[0,2],[0,3],[0,4],  // Left vertical
+      [1,1],                           // Left peak
+      [2,2],                           // Center peak
+      [3,1],                           // Right peak
+      [4,0],[4,1],[4,2],[4,3],[4,4]   // Right vertical
+    ];
+    
+    // A - Triangle with crossbar
+    const letterA = [
+      [1,0],                           // Top
+      [0,1],[2,1],                     // Upper sides
+      [0,2],[1,2],[2,2],               // Crossbar
+      [0,3],[2,3],                     // Lower sides
+      [0,4],[2,4]                      // Bottom
+    ];
+    
+    // N - Two verticals with diagonal
+    const letterN = [
+      [0,0],[0,1],[0,2],[0,3],[0,4],  // Left vertical
+      [1,1],                           // Diagonal
+      [2,2],                           // Diagonal
+      [3,3],                           // Diagonal
+      [4,0],[4,1],[4,2],[4,3],[4,4]   // Right vertical
+    ];
+    
+    // I - Simple vertical line (second I)
+    const letterI2 = [
+      [1,0],[1,1],[1,2],[1,3],[1,4]   // Center vertical
+    ];
+    
+    // Array of all 6 letters: H-I-M-A-N-I
     const letters = [letterH, letterI, letterM, letterA, letterN, letterI2];
-    const spacing = 50;
-    const letterSpacing = 35;
-    const scale = state.isMobile ? 8 : 12;
+    const letterSpacing = 45; // Space between letters
+    const scale = state.isMobile ? 10 : 14; // Size of each dot
     
     const centerX = this.canvas.width / 2;
-    const centerY = this.canvas.height / 2 - 50;
-    const totalWidth = (letters.reduce((sum, letter) => {
-      const width = Math.max(...letter.map(p => p[0]));
-      return sum + width * scale + letterSpacing;
-    }, 0));
+    const centerY = this.canvas.height / 2 - 30;
     
+    // Calculate total width of all letters
+    let totalWidth = 0;
+    letters.forEach((letter) => {
+      const letterWidth = Math.max(...letter.map(p => p[0])) * scale;
+      totalWidth += letterWidth + letterSpacing;
+    });
+    totalWidth -= letterSpacing; // Remove last spacing
+    
+    // Start position (centered)
     let offsetX = centerX - totalWidth / 2;
     
+    // Create stars for each letter
     letters.forEach((letter, letterIndex) => {
       letter.forEach(([x, y], pointIndex) => {
         this.constellationStars.push({
@@ -307,15 +360,18 @@ class ConstellationName {
           y: centerY + y * scale,
           alpha: 0,
           targetAlpha: 1,
-          radius: CONFIG.constellation.starSize,
-          delay: (letterIndex * letter.length + pointIndex) * 6, // 6ms delay per star
+          radius: CONFIG.constellation.starSize + 0.5, // Slightly larger stars
+          delay: (letterIndex * 15 + pointIndex * 3), // Faster animation
           letterIndex: letterIndex
         });
       });
       
+      // Move to next letter position
       const letterWidth = Math.max(...letter.map(p => p[0])) * scale;
       offsetX += letterWidth + letterSpacing;
     });
+    
+    console.log(`Created constellation with ${this.constellationStars.length} stars for HIMANI`);
   }
   
   startAnimation() {
@@ -323,47 +379,91 @@ class ConstellationName {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       
       this.constellationStars.forEach((star, index) => {
-        // Fade in based on delay - much faster
+        // Fade in based on delay - fast animation
         if (this.drawProgress > star.delay) {
           if (star.alpha < star.targetAlpha) {
-            star.alpha += 0.08; // Changed from 0.03 to 0.08 for faster fade
+            star.alpha += 0.1; // Very fast fade in
           }
         }
         
         if (star.alpha > 0) {
-          // Draw star
+          // Draw star with glow
           this.ctx.beginPath();
           this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
           this.ctx.fillStyle = `rgba(255, 215, 0, ${star.alpha})`;
-          this.ctx.shadowBlur = 15;
-          this.ctx.shadowColor = `rgba(255, 215, 0, ${star.alpha * 0.8})`;
+          this.ctx.shadowBlur = 20;
+          this.ctx.shadowColor = `rgba(255, 215, 0, ${star.alpha})`;
           this.ctx.fill();
           
-          // Draw connection lines
+          // Add extra bright center
+          this.ctx.beginPath();
+          this.ctx.arc(star.x, star.y, star.radius * 0.5, 0, Math.PI * 2);
+          this.ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha * 0.8})`;
+          this.ctx.shadowBlur = 10;
+          this.ctx.shadowColor = `rgba(255, 255, 255, ${star.alpha})`;
+          this.ctx.fill();
+          
+          // Draw connection lines within same letter
           if (CONFIG.constellation.connectLines && index > 0) {
             const prevStar = this.constellationStars[index - 1];
-            if (prevStar.letterIndex === star.letterIndex && prevStar.alpha > 0.5 && star.alpha > 0.5) {
+            if (prevStar.letterIndex === star.letterIndex && prevStar.alpha > 0.3 && star.alpha > 0.3) {
               this.ctx.beginPath();
               this.ctx.moveTo(prevStar.x, prevStar.y);
               this.ctx.lineTo(star.x, star.y);
-              this.ctx.strokeStyle = `rgba(212, 165, 255, ${Math.min(prevStar.alpha, star.alpha) * 0.4})`;
-              this.ctx.lineWidth = 1;
+              this.ctx.strokeStyle = `rgba(212, 165, 255, ${Math.min(prevStar.alpha, star.alpha) * 0.5})`;
+              this.ctx.lineWidth = 1.5;
+              this.ctx.shadowBlur = 5;
+              this.ctx.shadowColor = `rgba(212, 165, 255, ${Math.min(prevStar.alpha, star.alpha) * 0.3})`;
               this.ctx.stroke();
             }
           }
         }
       });
       
-      this.drawProgress += 1;
+      this.drawProgress += 2; // Faster progression
       
-      if (this.drawProgress < this.constellationStars[this.constellationStars.length - 1].delay + 100) {
+      if (this.drawProgress < this.constellationStars[this.constellationStars.length - 1].delay + 50) {
         this.animationId = requestAnimationFrame(animate);
+      } else {
+        // Keep drawing the final state
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.constellationStars.forEach((star, index) => {
+          // Draw final stars
+          this.ctx.beginPath();
+          this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          this.ctx.fillStyle = 'rgba(255, 215, 0, 1)';
+          this.ctx.shadowBlur = 20;
+          this.ctx.shadowColor = 'rgba(255, 215, 0, 1)';
+          this.ctx.fill();
+          
+          this.ctx.beginPath();
+          this.ctx.arc(star.x, star.y, star.radius * 0.5, 0, Math.PI * 2);
+          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          this.ctx.shadowBlur = 10;
+          this.ctx.shadowColor = 'rgba(255, 255, 255, 1)';
+          this.ctx.fill();
+          
+          // Draw final connection lines
+          if (CONFIG.constellation.connectLines && index > 0) {
+            const prevStar = this.constellationStars[index - 1];
+            if (prevStar.letterIndex === star.letterIndex) {
+              this.ctx.beginPath();
+              this.ctx.moveTo(prevStar.x, prevStar.y);
+              this.ctx.lineTo(star.x, star.y);
+              this.ctx.strokeStyle = 'rgba(212, 165, 255, 0.5)';
+              this.ctx.lineWidth = 1.5;
+              this.ctx.shadowBlur = 5;
+              this.ctx.shadowColor = 'rgba(212, 165, 255, 0.3)';
+              this.ctx.stroke();
+            }
+          }
+        });
       }
     };
     
     setTimeout(() => {
       this.animationId = requestAnimationFrame(animate);
-    }, 2000); // Start earlier - changed from 2500 to 2000
+    }, 1500); // Start earlier
   }
   
   destroy() {
