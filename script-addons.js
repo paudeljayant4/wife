@@ -695,7 +695,6 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     SoundEffects,
     ShootingStars,
-    ParticleHearts,
     LoveNotesJar,
     ReasonsILoveYou,
     Rose3D
