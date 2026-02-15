@@ -482,24 +482,14 @@ p {
 #constellation-name {
   opacity: 0;
   animation: fadeInUp 1.2s ease forwards 1.8s;
-  margin-bottom: var(--spacing-sm);
-}
-
-.constellation-subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
-  color: var(--stardust);
-  font-style: italic;
-  opacity: 0;
-  animation: fadeInUp 1.2s ease forwards 2.2s;
-  text-shadow: var(--glow-soft);
+  margin-bottom: var(--spacing-md);
 }
 
 .scroll-indicator {
   position: absolute;
   bottom: 3rem;
   opacity: 0;
-  animation: fadeInUp 1s ease forwards 3.5s, floatUpDown 3s ease-in-out infinite 4.5s;
+  animation: fadeInUp 1s ease forwards 2.8s, floatUpDown 3s ease-in-out infinite 3.8s;
 }
 
 @keyframes fadeInUp {
@@ -771,10 +761,10 @@ p {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center; /* Center content vertically */
   font-family: var(--font-display);
-  font-size: clamp(0.85rem, 2vw, 1.05rem);
-  line-height: 1.7;
+  font-size: clamp(0.9rem, 2vw, 1.1rem); /* Slightly larger text */
+  line-height: 1.8;
   color: #2d2d2d;
   opacity: 0;
   transform: translateY(30px) scale(0.95);
@@ -789,17 +779,18 @@ p {
 }
 
 .letter-text {
-  flex: 1;
   color: #333;
   opacity: 1;
+  text-align: center; /* Center the text */
 }
 
 .closing {
   font-style: italic;
   font-weight: 600;
   color: var(--nebula-purple);
-  margin-top: var(--spacing-sm);
-  text-align: right;
+  margin-top: var(--spacing-md);
+  text-align: center; /* Center the closing */
+  font-size: 1.1em;
 }
 
 .hint {
