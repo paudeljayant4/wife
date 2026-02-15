@@ -65,6 +65,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+/* Accessible no-script fallback */
+.noscript-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10001;
+  padding: 0.9rem 1rem;
+  background: rgba(10, 14, 39, 0.95);
+  color: var(--moonlight);
+  border-bottom: 1px solid rgba(212, 165, 255, 0.35);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+button:focus-visible,
+.glow-btn:focus-visible,
+#audio-control:focus-visible,
+#envelope:focus-visible {
+  outline: 2px solid var(--rose-gold);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(244, 194, 194, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 main {
   position: relative;
   z-index: 1;
@@ -128,8 +165,7 @@ main {
    SHOOTING STARS 
    ═══════════════════════════════════════════════════════════ */
 
-#shooting-stars-canvas,
-{
+#shooting-stars-canvas {
   position: fixed;
   top: 0;
   left: 0;
